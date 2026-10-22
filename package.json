@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "prisma generate --schema prisma/public/schema.prisma && prisma generate --schema prisma/tenant/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema prisma/public/schema.prisma",
+    "db:template": "prisma migrate diff --from-empty --to-schema-datamodel prisma/tenant/schema.prisma --script > prisma/tenant/template.sql"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

@@ -1,0 +1,82 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../../src/generated/tenant-client"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EstadoCaso {
+  abierto
+  en_curso
+  cerrado
+}
+
+enum CondicionEspecial {
+  ninguna
+  victima_conflicto
+  desplazado
+  migrante
+  madre_cabeza_familia
+  adulto_mayor
+  otro
+}
+
+enum PrioridadCaso {
+  baja
+  media
+  alta
+  urgente
+}
+
+model Cliente {
+  id                String            @id @default(uuid())
+  nombre            String
+  tipoDocumento     String            @map("tipo_documento")
+  numeroDocumento   String            @map("numero_documento")
+  email             String?
+  telefono          String?
+  condicionEspecial CondicionEspecial @default(ninguna) @map("condicion_especial")
+  tienePrioridad    Boolean           @default(false) @map("tiene_prioridad")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  casos             Caso[]
+
+  @@unique([tipoDocumento, numeroDocumento])
+  @@map("clientes")
+}
+
+model Caso {
+  id                  String        @id @default(uuid())
+  numeroExpediente    String        @unique @map("numero_expediente")
+  titulo              String
+  descripcion         String?
+  estado              EstadoCaso    @default(abierto)
+  prioridad           PrioridadCaso @default(media)
+  esFuerzaMayor       Boolean       @default(false) @map("es_fuerza_mayor")
+  nivelAbogadoExigido String        @default("junior") @map("nivel_abogado_exigido")
+  abogadoAsignadoId   String?       @map("abogado_asignado_id")
+  fechaApertura       DateTime      @default(now()) @map("fecha_apertura")
+  clienteId           String        @map("cliente_id")
+  cliente             Cliente       @relation(fields: [clienteId], references: [id], onDelete: Restrict)
+  documentos          Documento[]
+
+  @@index([clienteId])
+  @@index([abogadoAsignadoId])
+  @@map("casos")
+}
+
+model Documento {
+  id        String   @id @default(uuid())
+  nombre    String
+  tipo      String
+  url       String
+  casoId    String   @map("caso_id")
+  caso      Caso     @relation(fields: [casoId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([casoId])
+  @@map("documentos")
+}
