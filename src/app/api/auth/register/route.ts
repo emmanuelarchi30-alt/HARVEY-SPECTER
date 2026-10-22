@@ -1,14 +1,10 @@
 import { NextRequest } from "next/server";
-import bcrypt from "bcryptjs";
-import { publicPrisma } from "@/lib/db/publicClient";
 import { registerSchema } from "@/lib/validation/auth";
-import {
-  generateTenantSchemaName,
-  isValidSchemaName,
-  signAuthToken,
-} from "@/lib/auth/jwt";
+import { provisionTenant } from "@/lib/db/provisionTenant";
+import { signAuthToken } from "@/lib/auth/jwt";
 import { setAuthCookie } from "@/lib/auth/cookies";
 import { apiError, apiResponse } from "@/lib/http";
+import { publicPrisma } from "@/lib/db/publicClient";
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,73 +34,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generar y validar nombre de schema seguro para el nuevo tenant
-    const schemaName = generateTenantSchemaName();
-    if (!isValidSchemaName(schemaName)) {
-      return apiError("Error al generar identificador de schema para el despacho", 500);
-    }
-
-    // Hashear contraseña con bcrypt
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // Crear Tenant y Usuario Administrador en el schema public dentro de una transacción
-    const { tenant, user } = await publicPrisma.$transaction(async (tx) => {
-      const createdTenant = await tx.tenant.create({
-        data: {
-          name: tenantName,
-          schemaName,
-        },
-      });
-
-      const createdUser = await tx.user.create({
-        data: {
-          email,
-          passwordHash,
-          nombre,
-          role,
-          experienciaAnios,
-          tenantId: createdTenant.id,
-        },
-      });
-
-      return { tenant: createdTenant, user: createdUser };
+    // Aprovisionar nuevo tenant con su schema y tablas mediante una transacción atómica DDL
+    const provisioned = await provisionTenant({
+      tenantName,
+      nombreAbogado: nombre,
+      email,
+      password,
+      role,
+      experienciaAnios,
     });
 
-    // Firmar JWT con datos esenciales del tenant y usuario
+    // Firmar JWT con los datos de sesión y resolución de tenant
     const token = await signAuthToken({
-      userId: user.id,
-      email: user.email,
-      nombre: user.nombre || "",
-      role: user.role,
-      tenantId: tenant.id,
-      schemaName: tenant.schemaName,
+      userId: provisioned.userId,
+      email: provisioned.email,
+      nombre,
+      role: provisioned.role,
+      tenantId: provisioned.tenantId,
+      schemaName: provisioned.schemaName,
     });
 
     const response = apiResponse(
       {
-        message: "Despacho y abogado administrador registrados exitosamente",
+        message: "Despacho jurídico y schema aprovisionados exitosamente",
         user: {
-          id: user.id,
-          email: user.email,
-          nombre: user.nombre,
-          role: user.role,
-          experienciaAnios: user.experienciaAnios,
+          id: provisioned.userId,
+          email: provisioned.email,
+          nombre,
+          role: provisioned.role,
+          experienciaAnios,
         },
         tenant: {
-          id: tenant.id,
-          name: tenant.name,
-          schemaName: tenant.schemaName,
+          id: provisioned.tenantId,
+          name: provisioned.tenantName,
+          schemaName: provisioned.schemaName,
         },
       },
       201
     );
 
-    // Inyectar cookie httpOnly
+    // Inyectar cookie httpOnly con el token JWT
     setAuthCookie(response, token);
 
     return response;
   } catch (error) {
     console.error("Error en /api/auth/register:", error);
-    return apiError("Error interno al procesar el registro", 500);
+    return apiError(
+      error instanceof Error ? error.message : "Error al aprovisionar el despacho",
+      500
+    );
   }
 }

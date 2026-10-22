@@ -20,6 +20,13 @@ export default function HomePage() {
 
           <div className="flex items-center space-x-3">
             <Link
+              href="/registro-cliente"
+              className="text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/80 transition flex items-center space-x-1"
+            >
+              <span>⚖️</span>
+              <span>Radicar Caso / Clientes</span>
+            </Link>
+            <Link
               href="/login"
               className="text-xs sm:text-sm font-medium px-4 py-2 rounded-lg text-slate-300 hover:text-white transition"
             >
@@ -55,16 +62,22 @@ export default function HomePage() {
 
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link
+            href="/registro-cliente"
+            className="px-8 py-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-base transition shadow-xl shadow-emerald-950/40 text-center"
+          >
+            ⚖️ Soy Cliente: Radicar Caso / Asesoría
+          </Link>
+          <Link
             href="/register"
             className="px-8 py-3.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-medium text-base transition shadow-xl shadow-amber-900/30 text-center"
           >
-            Constituir mi Firma en la Plataforma
+            Constituir Firma Legal
           </Link>
           <Link
             href="/login"
             className="px-8 py-3.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white font-medium text-base transition text-center"
           >
-            Acceder al Despacho
+            Acceder como Abogado
           </Link>
         </div>
 

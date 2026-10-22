@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/public-client/index.js";
+import { PrismaClient } from "@/generated/public-client";
 
 declare global {
   // Evita múltiples instancias en desarrollo debido a Fast Refresh de Next.js

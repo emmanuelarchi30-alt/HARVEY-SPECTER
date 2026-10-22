@@ -63,20 +63,21 @@ export async function verifyAuthToken(
   }
 }
 
+export const SCHEMA_REGEX = /^tenant_[a-z0-9]{12,}$/;
+
 /**
  * Valida de forma estricta que un nombre de schema PostgreSQL sea seguro.
- * Solo permite minúsculas, números y guión bajo, empezando por "tenant_".
+ * Debe cumplir ^tenant_[a-z0-9]{12,}$
  */
 export function isValidSchemaName(schemaName: string): boolean {
-  const schemaRegex = /^tenant_[a-z0-9_]{3,30}$/;
-  return schemaRegex.test(schemaName);
+  return SCHEMA_REGEX.test(schemaName);
 }
 
 /**
- * Genera un nombre de schema seguro y determinista a partir de un prefijo aleatorio.
- * Ejemplo: "tenant_c8f2a1b9"
+ * Genera un nombre de schema seguro y aleatorio.
+ * Ejemplo: "tenant_f7a8b9c0d1e2f3a4"
  */
 export function generateTenantSchemaName(): string {
-  const randomSuffix = Math.random().toString(36).substring(2, 10);
-  return `tenant_${randomSuffix}`;
+  const randomSuffix = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+  return `tenant_${randomSuffix.substring(0, 16)}`;
 }
