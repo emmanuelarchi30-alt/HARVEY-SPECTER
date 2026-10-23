@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -87,13 +88,22 @@ export default function ConstitucionPage() {
               <Search className="w-3.5 h-3.5 text-amber-500" />
               <span className="hidden sm:inline">Consultar mi Radicado</span>
             </Link>
-            <Link
+            <SpecularButton
               href="/registro-cliente"
-              className="text-xs font-semibold px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white transition flex items-center space-x-1.5 shadow-md shadow-amber-950/20"
+              size="sm"
+              radius={14}
+              tint={isLight ? "#f59e0b" : "#ffffff"}
+              tintOpacity={isLight ? 0.16 : 0.08}
+              textColor={isLight ? "#92400e" : "#fef3c7"}
+              lineColor={isLight ? "#d97706" : "#f59e0b"}
+              baseColor={isLight ? "#fef3c7" : "#525252"}
+              intensity={1.1}
+              idleIntensity={0.35}
+              followMouse
             >
-              <Scale className="w-3.5 h-3.5" />
+              <Scale className="w-3.5 h-3.5 text-amber-500" />
               <span>Radicar Caso (IA)</span>
-            </Link>
+            </SpecularButton>
             <Link
               href="/"
               className={`text-xs transition flex items-center space-x-1 ${
@@ -142,20 +152,16 @@ export default function ConstitucionPage() {
         </div>
 
         {/* Buscador y Filtros Fluid Glass */}
-        <div className="fluid-glass rounded-2xl p-6 space-y-4 shadow-xl">
+        <div className="fluid-glass rounded-[28px] p-6 space-y-4 shadow-xl">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
                 placeholder="Buscar por artículo (ej. 86), término (ej. tutela, vida, debido proceso)..."
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
               />
             </div>
 

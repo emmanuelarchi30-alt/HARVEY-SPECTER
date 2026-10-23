@@ -18,6 +18,7 @@ import {
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { FluidGlassLens } from "@/components/ui/FluidGlassLens";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -83,12 +84,21 @@ export default function HomePage() {
               {t.nav_lawyer_access}
             </Link>
 
-            <Link
+            <SpecularButton
               href="/register"
-              className="text-xs font-semibold px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white transition shadow-md shadow-amber-950/30"
+              size="sm"
+              radius={14}
+              tint={isLight ? "#f59e0b" : "#ffffff"}
+              tintOpacity={isLight ? 0.15 : 0.08}
+              textColor={isLight ? "#92400e" : "#ffffff"}
+              lineColor={isLight ? "#d97706" : "#f59e0b"}
+              baseColor={isLight ? "#fef3c7" : "#525252"}
+              intensity={1.1}
+              idleIntensity={0.35}
+              followMouse
             >
               {t.nav_register_firm}
-            </Link>
+            </SpecularButton>
           </div>
         </div>
       </header>
@@ -113,29 +123,73 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Botones de Acción */}
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-          <Link
+        {/* Botones de Acción con React Bits SpecularButton (WebGL Liquid Light) */}
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center items-center">
+          <SpecularButton
             href="/registro-cliente"
-            className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm transition shadow-xl shadow-amber-950/40 flex items-center justify-center space-x-2.5"
+            size="lg"
+            radius={18}
+            tint={isLight ? "#f59e0b" : "#ffffff"}
+            tintOpacity={isLight ? 0.18 : 0.06}
+            textColor={isLight ? "#92400e" : "#fef3c7"}
+            lineColor={isLight ? "#d97706" : "#f59e0b"}
+            baseColor={isLight ? "#fef3c7" : "#525252"}
+            intensity={1.2}
+            idleIntensity={0.4}
+            shineSize={12}
+            shineFade={36}
+            thickness={1.4}
+            glow={1.2}
+            followMouse
+            proximity={280}
           >
-            <Scale className="w-4 h-4" />
+            <Scale className="w-4 h-4 text-amber-500" />
             <span>{t.btn_file_case}</span>
-          </Link>
-          <Link
+          </SpecularButton>
+
+          <SpecularButton
             href="/consultar-caso"
-            className="px-7 py-3.5 rounded-2xl fluid-glass border border-white/20 hover:border-amber-500/50 text-amber-600 dark:text-amber-300 font-semibold text-sm transition flex items-center justify-center space-x-2.5 shadow-lg"
+            size="lg"
+            radius={18}
+            tint={isLight ? "#ffffff" : "#ffffff"}
+            tintOpacity={isLight ? 0.12 : 0.05}
+            textColor={isLight ? "#0f172a" : "#f5f5f5"}
+            lineColor={isLight ? "#d97706" : "#ffffff"}
+            baseColor={isLight ? "#e2e8f0" : "#525252"}
+            intensity={1}
+            idleIntensity={0.35}
+            shineSize={10}
+            shineFade={34}
+            thickness={1.2}
+            glow={0.9}
+            followMouse
+            proximity={250}
           >
             <Search className="w-4 h-4 text-amber-500" />
             <span>{t.btn_track_case}</span>
-          </Link>
-          <Link
+          </SpecularButton>
+
+          <SpecularButton
             href="/aranceles"
-            className="px-6 py-3.5 rounded-2xl fluid-glass border border-white/20 hover:border-amber-500/50 font-semibold text-sm transition flex items-center justify-center space-x-2 shadow-lg"
+            size="lg"
+            radius={18}
+            tint={isLight ? "#ffffff" : "#ffffff"}
+            tintOpacity={isLight ? 0.12 : 0.05}
+            textColor={isLight ? "#0f172a" : "#f5f5f5"}
+            lineColor={isLight ? "#0ea5e9" : "#38bdf8"}
+            baseColor={isLight ? "#e2e8f0" : "#525252"}
+            intensity={1}
+            idleIntensity={0.35}
+            shineSize={10}
+            shineFade={34}
+            thickness={1.2}
+            glow={0.9}
+            followMouse
+            proximity={250}
           >
             <Zap className="w-4 h-4 text-amber-500" />
             <span>{t.nav_pricing}</span>
-          </Link>
+          </SpecularButton>
         </div>
 
         {/* Lente Refractiva React Bits Pure Fluid Glass */}

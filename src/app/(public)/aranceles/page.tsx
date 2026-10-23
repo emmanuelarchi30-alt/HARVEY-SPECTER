@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -270,23 +271,47 @@ export default function ArancelesPage() {
                 </ul>
               </div>
 
-              <div className="pt-4 border-t border-white/[0.08]">
+              <div className="pt-4 border-t border-white/[0.08] flex justify-center">
                 {plan.esGratuito ? (
-                  <Link
+                  <SpecularButton
                     href="/registro-cliente"
-                    className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl shadow-lg shadow-emerald-950/40 transition flex items-center justify-center space-x-1.5 text-center"
+                    size="md"
+                    radius={16}
+                    tint="#10b981"
+                    tintOpacity={0.18}
+                    textColor={isLight ? "#065f46" : "#a7f3d0"}
+                    lineColor="#10b981"
+                    baseColor={isLight ? "#d1fae5" : "#064e3b"}
+                    intensity={1.1}
+                    idleIntensity={0.35}
+                    followMouse
+                    className="w-full"
                   >
                     <span>Radicar Caso con Amparo Gratuito</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                    <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+                  </SpecularButton>
                 ) : (
-                  <button
+                  <SpecularButton
                     onClick={() => iniciarPago(plan)}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-xs rounded-xl shadow-lg shadow-amber-950/40 transition flex items-center justify-center space-x-1.5 cursor-pointer"
+                    size="md"
+                    radius={16}
+                    tint={plan.esDestacado ? (isLight ? "#ef4444" : "#f43f5e") : (isLight ? "#f59e0b" : "#ffffff")}
+                    tintOpacity={plan.esDestacado ? 0.22 : (isLight ? 0.16 : 0.08)}
+                    textColor={plan.esDestacado ? (isLight ? "#991b1b" : "#ffe4e6") : (isLight ? "#92400e" : "#fef3c7")}
+                    lineColor={plan.esDestacado ? "#f43f5e" : (isLight ? "#d97706" : "#f59e0b")}
+                    baseColor={plan.esDestacado ? (isLight ? "#fee2e2" : "#881337") : (isLight ? "#fef3c7" : "#525252")}
+                    intensity={1.2}
+                    idleIntensity={0.4}
+                    shineSize={12}
+                    shineFade={36}
+                    thickness={1.4}
+                    glow={1.2}
+                    followMouse
+                    className="w-full"
                   >
-                    <CreditCard className="w-3.5 h-3.5" />
+                    <CreditCard className="w-3.5 h-3.5 text-amber-500" />
                     <span>Contratar {plan.nombre}</span>
-                  </button>
+                  </SpecularButton>
                 )}
               </div>
             </div>
@@ -364,7 +389,7 @@ export default function ArancelesPage() {
                     value={nombreTitular}
                     onChange={(e) => setNombreTitular(e.target.value)}
                     placeholder="Ej. Rodrigo Montoya"
-                    className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    className="w-full px-4 py-2.5 ios-input text-sm"
                   />
                 </div>
 
@@ -378,18 +403,28 @@ export default function ArancelesPage() {
                     value={cedulaTitular}
                     onChange={(e) => setCedulaTitular(e.target.value)}
                     placeholder="Ej. 71234567"
-                    className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    className="w-full px-4 py-2.5 ios-input text-sm"
                   />
                 </div>
 
-                <div className="pt-2">
-                  <button
+                <div className="pt-2 flex justify-center">
+                  <SpecularButton
                     type="submit"
-                    className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold text-xs rounded-xl shadow-xl shadow-emerald-950/40 transition flex items-center justify-center space-x-2 cursor-pointer"
+                    size="md"
+                    radius={16}
+                    tint="#10b981"
+                    tintOpacity={0.2}
+                    textColor="#ffffff"
+                    lineColor="#10b981"
+                    baseColor="#064e3b"
+                    intensity={1.2}
+                    idleIntensity={0.4}
+                    followMouse
+                    className="w-full"
                   >
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                     <span>Confirmar Pago de {planSeleccionado.precioTexto}</span>
-                  </button>
+                  </SpecularButton>
                 </div>
               </form>
             </div>
@@ -432,23 +467,44 @@ export default function ArancelesPage() {
                 </p>
               </div>
 
-              <div className="space-y-2 pt-2">
-                <Link
+              <div className="space-y-3 pt-2 flex flex-col items-center">
+                <SpecularButton
                   href="/registro-cliente"
-                  className="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-2"
+                  size="md"
+                  radius={16}
+                  tint="#f59e0b"
+                  tintOpacity={0.2}
+                  textColor="#fef3c7"
+                  lineColor="#d97706"
+                  baseColor="#525252"
+                  intensity={1.2}
+                  idleIntensity={0.4}
+                  followMouse
+                  className="w-full"
                 >
-                  <Scale className="w-4 h-4" />
+                  <Scale className="w-4 h-4 text-amber-500" />
                   <span>Proceder a Radicar Expediente con este Plan</span>
-                </Link>
-                <button
+                </SpecularButton>
+
+                <SpecularButton
                   onClick={() => {
                     setPlanSeleccionado(null);
                     setPasoPago("seleccion");
                   }}
-                  className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
+                  size="sm"
+                  radius={14}
+                  tint="#ffffff"
+                  tintOpacity={0.06}
+                  textColor="#f5f5f5"
+                  lineColor="#94a3b8"
+                  baseColor="#525252"
+                  intensity={1}
+                  idleIntensity={0.3}
+                  followMouse
+                  className="w-full"
                 >
-                  Cerrar Comprobante
-                </button>
+                  <span>Cerrar Comprobante</span>
+                </SpecularButton>
               </div>
             </div>
           </div>

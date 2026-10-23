@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Scale, Search, Lock, Mail, ArrowLeft, ShieldCheck, AlertCircle } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function LoginPage() {
@@ -76,17 +77,29 @@ export default function LoginPage() {
           <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-300"}`}>
             Si radicaste una solicitud o tutela, no requieres contraseña de abogado. Consulta tu expediente directamente con tu radicado oficial y cédula.
           </p>
-          <Link
-            href="/consultar-caso"
-            className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-amber-950/20 space-x-2"
-          >
-            <Search className="w-4 h-4" />
-            <span>Consultar Estado de mi Caso / Petición</span>
-          </Link>
+          <div className="flex justify-center pt-1">
+            <SpecularButton
+              href="/consultar-caso"
+              size="sm"
+              radius={14}
+              tint={isLight ? "#f59e0b" : "#ffffff"}
+              tintOpacity={isLight ? 0.16 : 0.08}
+              textColor={isLight ? "#92400e" : "#fef3c7"}
+              lineColor={isLight ? "#d97706" : "#f59e0b"}
+              baseColor={isLight ? "#fef3c7" : "#525252"}
+              intensity={1.1}
+              idleIntensity={0.35}
+              followMouse
+              className="w-full"
+            >
+              <Search className="w-4 h-4 text-amber-500" />
+              <span>Consultar Estado de mi Caso / Petición</span>
+            </SpecularButton>
+          </div>
         </div>
 
         {/* Formulario de Acceso para Abogados */}
-        <div className="fluid-glass rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6">
+        <div className="fluid-glass rounded-[28px] p-8 sm:p-10 shadow-2xl space-y-6">
           <div className="text-center space-y-2">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 mb-2 shadow-lg shadow-amber-950/20">
               <Scale className="w-6 h-6 text-amber-500" />
@@ -121,7 +134,7 @@ export default function LoginPage() {
                 Correo Institucional
               </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   id="email"
                   type="email"
@@ -129,11 +142,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="harvey.specter@specterlaw.co"
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                    isLight
-                      ? "bg-white/90 border-slate-200 text-slate-900"
-                      : "bg-slate-950/70 border-white/10 text-white"
-                  }`}
+                  className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
                 />
               </div>
             </div>
@@ -148,7 +157,7 @@ export default function LoginPage() {
                 Contraseña de Acceso
               </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   id="password"
                   type="password"
@@ -156,23 +165,36 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                    isLight
-                      ? "bg-white/90 border-slate-200 text-slate-900"
-                      : "bg-slate-950/70 border-white/10 text-white"
-                  }`}
+                  className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
                 />
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-amber-950/40 transition duration-150 disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
-            >
-              <Scale className="w-4 h-4" />
-              <span>{loading ? "Verificando credenciales..." : "Ingresar al Despacho"}</span>
-            </button>
+            <div className="pt-2 flex justify-center">
+              <SpecularButton
+                type="submit"
+                disabled={loading}
+                size="md"
+                radius={16}
+                tint={isLight ? "#f59e0b" : "#ffffff"}
+                tintOpacity={isLight ? 0.2 : 0.08}
+                textColor={isLight ? "#92400e" : "#fef3c7"}
+                lineColor={isLight ? "#d97706" : "#f59e0b"}
+                baseColor={isLight ? "#fef3c7" : "#525252"}
+                intensity={1.25}
+                idleIntensity={0.4}
+                shineSize={12}
+                shineFade={36}
+                thickness={1.4}
+                glow={1.2}
+                followMouse
+                proximity={250}
+                className="w-full"
+              >
+                <Scale className="w-4 h-4 text-amber-500" />
+                <span>{loading ? "Verificando credenciales..." : "Ingresar al Despacho"}</span>
+              </SpecularButton>
+            </div>
           </form>
 
           <div className="pt-4 border-t border-white/[0.08] text-center space-y-2">

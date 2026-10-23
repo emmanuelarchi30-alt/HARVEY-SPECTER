@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -388,23 +389,38 @@ export default function RegistroClientePage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Link
+                <SpecularButton
                   href="/consultar-caso"
-                  className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-xl text-xs font-semibold transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-950/40"
+                  size="md"
+                  radius={16}
+                  tint="#10b981"
+                  tintOpacity={0.16}
+                  textColor={isLight ? "#065f46" : "#a7f3d0"}
+                  lineColor="#10b981"
+                  baseColor={isLight ? "#d1fae5" : "#064e3b"}
+                  intensity={1.1}
+                  idleIntensity={0.35}
+                  followMouse
                 >
-                  <Search className="w-4 h-4" />
+                  <Search className="w-4 h-4 text-emerald-500" />
                   <span>Consultar Estado de este Radicado</span>
-                </Link>
-                <button
+                </SpecularButton>
+
+                <SpecularButton
                   onClick={() => setResultado(null)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
-                    isLight
-                      ? "bg-slate-200 hover:bg-slate-300 text-slate-800"
-                      : "bg-slate-800 hover:bg-slate-700 text-white"
-                  }`}
+                  size="md"
+                  radius={16}
+                  tint={isLight ? "#ffffff" : "#ffffff"}
+                  tintOpacity={isLight ? 0.08 : 0.04}
+                  textColor={isLight ? "#0f172a" : "#f5f5f5"}
+                  lineColor={isLight ? "#94a3b8" : "#ffffff"}
+                  baseColor={isLight ? "#e2e8f0" : "#525252"}
+                  intensity={1}
+                  idleIntensity={0.3}
+                  followMouse
                 >
-                  Radicar Otra Solicitud
-                </button>
+                  <span>Radicar Otra Solicitud</span>
+                </SpecularButton>
               </div>
             </div>
           ) : (
@@ -436,11 +452,7 @@ export default function RegistroClientePage() {
                     <select
                       value={despachoSeleccionadoId}
                       onChange={(e) => setDespachoSeleccionadoId(e.target.value)}
-                      className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm font-medium ${
-                        isLight
-                          ? "bg-white/90 border-slate-200 text-slate-900"
-                          : "bg-slate-950/70 border-white/10 text-white"
-                      }`}
+                      className="w-full px-4 py-2.5 ios-input text-sm font-medium"
                     >
                       {despachos.map((d) => (
                         <option key={d.id} value={d.id} className={isLight ? "text-slate-900" : "text-white"}>
@@ -504,11 +516,7 @@ export default function RegistroClientePage() {
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
                     placeholder="Ej. María Pérez Gómez"
-                    className={`w-full px-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                      isLight
-                        ? "bg-white/90 border-slate-200 text-slate-900"
-                        : "bg-slate-950/70 border-white/10 text-white"
-                    }`}
+                    className="w-full px-4 py-2.5 ios-input text-sm"
                   />
                 </div>
 
@@ -524,11 +532,7 @@ export default function RegistroClientePage() {
                     <select
                       value={tipoDocumento}
                       onChange={(e) => setTipoDocumento(e.target.value)}
-                      className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                        isLight
-                          ? "bg-white/90 border-slate-200 text-slate-900"
-                          : "bg-slate-950/70 border-white/10 text-white"
-                      }`}
+                      className="w-full px-4 py-2.5 ios-input text-sm"
                     >
                       <option value="CC" className={isLight ? "text-slate-900" : "text-white"}>Cédula de Ciudadanía (CC)</option>
                       <option value="TI" className={isLight ? "text-slate-900" : "text-white"}>Tarjeta de Identidad (TI)</option>
@@ -552,11 +556,7 @@ export default function RegistroClientePage() {
                       value={numeroDocumento}
                       onChange={(e) => setNumeroDocumento(e.target.value)}
                       placeholder="Ej. 1020304050"
-                      className={`w-full px-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                        isLight
-                          ? "bg-white/90 border-slate-200 text-slate-900"
-                          : "bg-slate-950/70 border-white/10 text-white"
-                      }`}
+                      className="w-full px-4 py-2.5 ios-input text-sm"
                     />
                   </div>
                 </div>
@@ -575,11 +575,7 @@ export default function RegistroClientePage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="maria@ejemplo.com"
-                      className={`w-full px-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                        isLight
-                          ? "bg-white/90 border-slate-200 text-slate-900"
-                          : "bg-slate-950/70 border-white/10 text-white"
-                      }`}
+                      className="w-full px-4 py-2.5 ios-input text-sm"
                     />
                   </div>
 
@@ -596,11 +592,7 @@ export default function RegistroClientePage() {
                       value={telefono}
                       onChange={(e) => setTelefono(e.target.value)}
                       placeholder="300 123 4567"
-                      className={`w-full px-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                        isLight
-                          ? "bg-white/90 border-slate-200 text-slate-900"
-                          : "bg-slate-950/70 border-white/10 text-white"
-                      }`}
+                      className="w-full px-4 py-2.5 ios-input text-sm"
                     />
                   </div>
                 </div>
@@ -623,11 +615,7 @@ export default function RegistroClientePage() {
                   <select
                     value={condicionEspecial}
                     onChange={(e) => handleCondicionChange(e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm font-medium ${
-                      isLight
-                        ? "bg-white/90 border-slate-200 text-slate-900"
-                        : "bg-slate-950/70 border-white/10 text-white"
-                    }`}
+                    className="w-full px-4 py-3 ios-input text-sm font-medium"
                   >
                     <option value="ninguna" className={isLight ? "text-slate-900" : "text-white"}>Ninguna / Ciudadano General (Trámite Ordinario)</option>
                     <option value="victima_conflicto" className={isLight ? "text-slate-900" : "text-white"}>
@@ -840,11 +828,7 @@ export default function RegistroClientePage() {
                     value={tituloCaso}
                     onChange={(e) => setTituloCaso(e.target.value)}
                     placeholder="Ej. Acción de Tutela por Derecho Fundamental a la Salud / Restitución"
-                    className={`w-full px-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                      isLight
-                        ? "bg-white/90 border-slate-200 text-slate-900"
-                        : "bg-slate-950/70 border-white/10 text-white"
-                    }`}
+                    className="w-full px-4 py-2.5 ios-input text-sm"
                   />
                 </div>
 
@@ -861,11 +845,7 @@ export default function RegistroClientePage() {
                     value={descripcion}
                     onChange={(e) => setDescripcion(e.target.value)}
                     placeholder="Describa brevemente los hechos, entidades o personas involucradas y derechos vulnerados..."
-                    className={`w-full px-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm ${
-                      isLight
-                        ? "bg-white/90 border-slate-200 text-slate-900"
-                        : "bg-slate-950/70 border-white/10 text-white"
-                    }`}
+                    className="w-full px-4 py-2.5 ios-input text-sm"
                   />
                 </div>
 
@@ -897,19 +877,34 @@ export default function RegistroClientePage() {
                 </div>
               </div>
 
-              <div className="pt-4">
-                <button
+              <div className="pt-4 flex justify-center">
+                <SpecularButton
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-xl shadow-amber-950/40 transition disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
+                  size="lg"
+                  radius={18}
+                  tint={isLight ? "#f59e0b" : "#ffffff"}
+                  tintOpacity={isLight ? 0.2 : 0.08}
+                  textColor={isLight ? "#92400e" : "#fef3c7"}
+                  lineColor={isLight ? "#d97706" : "#f59e0b"}
+                  baseColor={isLight ? "#fef3c7" : "#525252"}
+                  intensity={1.25}
+                  idleIntensity={0.4}
+                  shineSize={12}
+                  shineFade={36}
+                  thickness={1.4}
+                  glow={1.2}
+                  followMouse
+                  proximity={280}
+                  className="w-full"
                 >
-                  <Scale className="w-4 h-4" />
+                  <Scale className="w-4 h-4 text-amber-500" />
                   <span>
                     {loading
                       ? "Procesando triaje de IA y radicando caso..."
                       : "Radicar Caso ante la Firma Jurídica"}
                   </span>
-                </button>
+                </SpecularButton>
               </div>
             </form>
           )}

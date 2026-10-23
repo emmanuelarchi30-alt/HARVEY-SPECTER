@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function RegisterPage() {
@@ -127,11 +128,7 @@ export default function RegisterPage() {
                 value={tenantName}
                 onChange={(e) => setTenantName(e.target.value)}
                 placeholder="Ej. De La Espriella Lawyers / Castro & Asociados"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
               />
             </div>
           </div>
@@ -146,7 +143,7 @@ export default function RegisterPage() {
               Nombre del Abogado Fundador / Titular
             </label>
             <div className="relative">
-              <UserCheck className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <UserCheck className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
               <input
                 id="nombre"
                 type="text"
@@ -154,11 +151,7 @@ export default function RegisterPage() {
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 placeholder="Ej. Dr. Harvey Specter"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
               />
             </div>
           </div>
@@ -173,7 +166,7 @@ export default function RegisterPage() {
               Cédula o Documento de Identidad del Abogado
             </label>
             <div className="relative">
-              <UserCheck className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <UserCheck className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
               <input
                 id="cedula"
                 type="text"
@@ -181,11 +174,7 @@ export default function RegisterPage() {
                 value={cedula}
                 onChange={(e) => setCedula(e.target.value)}
                 placeholder="Ej. 80192834"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
               />
             </div>
           </div>
@@ -200,7 +189,7 @@ export default function RegisterPage() {
               Correo Electrónico Institucional
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
               <input
                 id="email"
                 type="email"
@@ -208,11 +197,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="fundador@firma.co"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
               />
             </div>
           </div>
@@ -227,7 +212,7 @@ export default function RegisterPage() {
               Contraseña de Acceso
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
               <input
                 id="password"
                 type="password"
@@ -236,11 +221,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Mínimo 8 caracteres"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
               />
             </div>
           </div>
@@ -259,11 +240,7 @@ export default function RegisterPage() {
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition ${
-                  isLight
-                    ? "bg-white/90 border-slate-200 text-slate-900"
-                    : "bg-slate-950/70 border-white/10 text-white"
-                }`}
+                className="w-full px-4 py-2.5 ios-input text-sm"
               >
                 <option value="socio" className={isLight ? "text-slate-900" : "text-white"}>Socio Director (Abogado Mayor)</option>
                 <option value="senior" className={isLight ? "text-slate-900" : "text-white"}>Abogado Senior (Abogado Mayor)</option>
@@ -281,7 +258,7 @@ export default function RegisterPage() {
                 Años de Experiencia
               </label>
               <div className="relative">
-                <GraduationCap className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                <GraduationCap className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   id="experienciaAnios"
                   type="number"
@@ -290,11 +267,7 @@ export default function RegisterPage() {
                   required
                   value={experienciaAnios}
                   onChange={(e) => setExperienciaAnios(Number(e.target.value))}
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
-                    isLight
-                      ? "bg-white/90 border-slate-200 text-slate-900"
-                      : "bg-slate-950/70 border-white/10 text-white"
-                  }`}
+                  className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
                 />
               </div>
             </div>
@@ -314,18 +287,35 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-amber-950/40 transition duration-150 disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
-          >
-            <Building2 className="w-4 h-4" />
-            <span>
-              {loading
-                ? "Aprovisionando schema y base de datos..."
-                : "Aprovisionar Firma & Iniciar Litigio"}
-            </span>
-          </button>
+          <div className="pt-2 flex justify-center">
+            <SpecularButton
+              type="submit"
+              disabled={loading}
+              size="md"
+              radius={16}
+              tint={isLight ? "#f59e0b" : "#ffffff"}
+              tintOpacity={isLight ? 0.2 : 0.08}
+              textColor={isLight ? "#92400e" : "#fef3c7"}
+              lineColor={isLight ? "#d97706" : "#f59e0b"}
+              baseColor={isLight ? "#fef3c7" : "#525252"}
+              intensity={1.25}
+              idleIntensity={0.4}
+              shineSize={12}
+              shineFade={36}
+              thickness={1.4}
+              glow={1.2}
+              followMouse
+              proximity={250}
+              className="w-full"
+            >
+              <Building2 className="w-4 h-4 text-amber-500" />
+              <span>
+                {loading
+                  ? "Aprovisionando schema y base de datos..."
+                  : "Aprovisionar Firma & Iniciar Litigio"}
+              </span>
+            </SpecularButton>
+          </div>
         </form>
 
         <div className="pt-4 border-t border-white/[0.08] text-center space-y-2">

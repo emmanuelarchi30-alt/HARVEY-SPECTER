@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -154,11 +155,11 @@ export default function ConsultarCasoPage() {
       {/* Contenido Principal */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-12 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full fluid-glass-pill text-amber-400 text-xs font-semibold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full fluid-glass-pill text-amber-500 text-xs font-semibold uppercase tracking-wider">
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
             <span>Seguimiento Judicial en Línea</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+          <h1 className={`text-3xl sm:text-4xl font-serif font-bold tracking-tight ${isLight ? "text-slate-900" : "text-white"}`}>
             Consulte el Estado de su Proceso o Petición
           </h1>
           <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
@@ -167,60 +168,74 @@ export default function ConsultarCasoPage() {
         </div>
 
         {/* Formulario de Búsqueda Fluid Glass */}
-        <div className="fluid-glass rounded-2xl p-6 sm:p-8 shadow-2xl">
+        <div className="fluid-glass rounded-[28px] p-6 sm:p-8 shadow-2xl">
           <form onSubmit={handleBuscar} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                <label className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
                   Número de Radicado (Obligatorio)
                 </label>
                 <div className="relative">
-                  <FileText className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                  <FileText className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                   <input
                     type="text"
                     required
                     value={radicado}
                     onChange={(e) => setRadicado(e.target.value)}
                     placeholder="Ej. RAD-2026-7658"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                <label className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
                   Número de Documento / Cédula (Obligatorio)
                 </label>
                 <div className="relative">
-                  <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                  <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                   <input
                     type="text"
                     required
                     value={numeroDocumento}
                     onChange={(e) => setNumeroDocumento(e.target.value)}
                     placeholder="Ej. 1020304050"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
                   />
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-              <p className="text-xs text-slate-400">
+              <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                 ¿No ha radicado aún?{" "}
-                <Link href="/registro-cliente" className="text-amber-400 hover:underline">
+                <Link href="/registro-cliente" className="text-amber-500 font-semibold hover:underline">
                   Radicar Caso con Triaje IA aquí
                 </Link>
               </p>
 
-              <button
+              <SpecularButton
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-medium text-sm rounded-xl shadow-lg shadow-amber-950/40 transition flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
+                size="md"
+                radius={16}
+                tint={isLight ? "#f59e0b" : "#ffffff"}
+                tintOpacity={isLight ? 0.16 : 0.08}
+                textColor={isLight ? "#92400e" : "#fef3c7"}
+                lineColor={isLight ? "#d97706" : "#f59e0b"}
+                baseColor={isLight ? "#fef3c7" : "#525252"}
+                intensity={1.2}
+                idleIntensity={0.35}
+                shineSize={12}
+                shineFade={34}
+                thickness={1.3}
+                glow={1.1}
+                followMouse
+                proximity={240}
               >
-                <Search className="w-4 h-4" />
+                <Search className="w-4 h-4 text-amber-500" />
                 <span>{loading ? "Consultando expediente..." : "Consultar Expediente"}</span>
-              </button>
+              </SpecularButton>
             </div>
           </form>
 
