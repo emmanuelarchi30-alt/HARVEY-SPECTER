@@ -142,7 +142,11 @@ export default function ArancelesPage() {
   }
 
   return (
-    <div className="min-h-screen text-slate-100 flex flex-col font-sans relative">
+    <div
+      className={`min-h-screen flex flex-col font-sans relative transition-colors duration-300 ${
+        isLight ? "text-slate-800" : "text-slate-100"
+      }`}
+    >
       <FluidGlassBackground />
 
       {/* Header con PillNav de React Bits */}
@@ -151,14 +155,22 @@ export default function ArancelesPage() {
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full fluid-glass-pill text-amber-400 text-xs font-semibold uppercase tracking-wider">
-            <Zap className="w-3.5 h-3.5 text-amber-400" />
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full fluid-glass-pill text-amber-500 text-xs font-semibold uppercase tracking-wider">
+            <Zap className="w-3.5 h-3.5 text-amber-500" />
             <span>Regla de Celeridad: A Mayor Arancel, Menor Tiempo de Estudio</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          <h1
+            className={`text-3xl sm:text-5xl font-serif font-bold tracking-tight ${
+              isLight ? "text-slate-900" : "text-white"
+            }`}
+          >
             Tarifas de Litigio & Tiempos de Respuesta
           </h1>
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p
+            className={`text-sm sm:text-base leading-relaxed ${
+              isLight ? "text-slate-700 font-medium" : "text-slate-300"
+            }`}
+          >
             Elija la modalidad que mejor se adapte a su urgencia jurídica. Los casos de especial protección (víctimas del conflicto armado) son 100% gratuitos por mandato constitucional. Los casos <strong>Fast Track (Pago Grande)</strong> son estudiados en menos de 12 horas con solicitud de medida cautelar provisional.
           </p>
         </div>
@@ -288,45 +300,67 @@ export default function ArancelesPage() {
 
         {/* Modal de Pago / Pasarela Simulada */}
         {planSeleccionado && pasoPago === "formulario" && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <div className="fluid-glass rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 border-amber-500/40 shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+            <div
+              className={`fluid-glass rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 border-amber-500/40 shadow-2xl ${
+                isLight ? "bg-white/95 text-slate-800" : ""
+              }`}
+            >
               <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
                 <div>
-                  <span className="text-xs uppercase tracking-wider font-semibold text-amber-400">
+                  <span className="text-xs uppercase tracking-wider font-semibold text-amber-500">
                     Pasarela de Pago de Arancel Procesal
                   </span>
-                  <h2 className="text-xl font-serif font-bold text-white mt-0.5">
+                  <h2
+                    className={`text-xl font-serif font-bold mt-0.5 ${
+                      isLight ? "text-slate-900" : "text-white"
+                    }`}
+                  >
                     {planSeleccionado.nombre}
                   </h2>
                 </div>
                 <button
                   onClick={() => setPlanSeleccionado(null)}
-                  className="w-8 h-8 rounded-full bg-white/[0.05] border border-white/10 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer text-sm"
+                  className={`w-8 h-8 rounded-full border flex items-center justify-center cursor-pointer text-sm transition ${
+                    isLight
+                      ? "bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200"
+                      : "bg-white/[0.05] border-white/10 text-slate-400 hover:text-white"
+                  }`}
                 >
                   ✕
                 </button>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/[0.08] space-y-2 text-xs">
+              <div
+                className={`p-4 rounded-2xl border space-y-2 text-xs ${
+                  isLight
+                    ? "bg-amber-50/70 border-amber-200 text-slate-700"
+                    : "bg-slate-950/70 border-white/[0.08]"
+                }`}
+              >
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Arancel a Cancelar:</span>
-                  <strong className="text-amber-400 font-mono text-sm">
+                  <span className={isLight ? "text-slate-600" : "text-slate-400"}>Arancel a Cancelar:</span>
+                  <strong className="text-amber-500 font-mono text-sm">
                     {planSeleccionado.precioTexto}
                   </strong>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Tiempo de Estudio Garantizado:</span>
-                  <strong className="text-white">{planSeleccionado.tiempoEstudio}</strong>
+                  <span className={isLight ? "text-slate-600" : "text-slate-400"}>Tiempo de Estudio Garantizado:</span>
+                  <strong className={isLight ? "text-slate-900" : "text-white"}>{planSeleccionado.tiempoEstudio}</strong>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Abogado Responsable:</span>
-                  <strong className="text-emerald-400">{planSeleccionado.nivelAbogado}</strong>
+                  <span className={isLight ? "text-slate-600" : "text-slate-400"}>Abogado Responsable:</span>
+                  <strong className={isLight ? "text-emerald-700 font-bold" : "text-emerald-400"}>{planSeleccionado.nivelAbogado}</strong>
                 </div>
               </div>
 
               <form onSubmit={procesarSimulacionPago} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  <label
+                    className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
                     Método de Pago
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -337,7 +371,9 @@ export default function ArancelesPage() {
                         onClick={() => setMetodoPago(m)}
                         className={`py-2 px-3 rounded-xl text-xs font-semibold transition border cursor-pointer ${
                           metodoPago === m
-                            ? "bg-amber-500 text-slate-950 border-amber-400"
+                            ? "bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-sm"
+                            : isLight
+                            ? "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
                             : "bg-white/[0.04] text-slate-300 border-white/10 hover:bg-white/[0.08]"
                         }`}
                       >
@@ -348,7 +384,11 @@ export default function ArancelesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  <label
+                    className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
                     Nombre Completo del Pagador / Accionante
                   </label>
                   <input
@@ -362,7 +402,11 @@ export default function ArancelesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  <label
+                    className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
                     Cédula o NIT
                   </label>
                   <input
@@ -401,37 +445,51 @@ export default function ArancelesPage() {
 
         {/* Modal de Pago Exitoso con Comprobante */}
         {planSeleccionado && pasoPago === "exitoso" && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <div className="fluid-glass rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 border-emerald-500/50 shadow-2xl text-center">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 mx-auto flex items-center justify-center shadow-lg">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+            <div
+              className={`fluid-glass rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 border-emerald-500/50 shadow-2xl text-center ${
+                isLight ? "bg-white/95 text-slate-800" : ""
+              }`}
+            >
+              <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-500 mx-auto flex items-center justify-center shadow-lg">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
 
               <div>
-                <h2 className="text-2xl font-serif font-bold text-white">
+                <h2
+                  className={`text-2xl font-serif font-bold ${
+                    isLight ? "text-slate-900" : "text-white"
+                  }`}
+                >
                   ¡Pago Confirmado Exitosamente!
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className={`text-xs mt-1 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                   Su arancel ha sido recaudado y el orden de prelación ha sido asignado.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-white/10 text-left space-y-2 text-xs">
+              <div
+                className={`p-4 rounded-2xl border text-left space-y-2 text-xs ${
+                  isLight
+                    ? "bg-slate-50 border-slate-200 text-slate-800"
+                    : "bg-slate-950/80 border-white/10"
+                }`}
+              >
                 <p>
-                  <strong className="text-slate-400">Referencia de Pago:</strong>{" "}
-                  <span className="font-mono font-bold text-amber-400">{referenciaPago}</span>
+                  <strong className={isLight ? "text-slate-600" : "text-slate-400"}>Referencia de Pago:</strong>{" "}
+                  <span className="font-mono font-bold text-amber-500">{referenciaPago}</span>
                 </p>
                 <p>
-                  <strong className="text-slate-400">Modalidad Contratada:</strong>{" "}
-                  <span className="text-white">{planSeleccionado.nombre}</span>
+                  <strong className={isLight ? "text-slate-600" : "text-slate-400"}>Modalidad Contratada:</strong>{" "}
+                  <span className={isLight ? "text-slate-900 font-medium" : "text-white"}>{planSeleccionado.nombre}</span>
                 </p>
                 <p>
-                  <strong className="text-slate-400">Tiempo de Estudio Máximo:</strong>{" "}
-                  <span className="text-emerald-400 font-bold">{planSeleccionado.tiempoEstudio}</span>
+                  <strong className={isLight ? "text-slate-600" : "text-slate-400"}>Tiempo de Estudio Máximo:</strong>{" "}
+                  <span className={isLight ? "text-emerald-700 font-bold" : "text-emerald-400 font-bold"}>{planSeleccionado.tiempoEstudio}</span>
                 </p>
                 <p>
-                  <strong className="text-slate-400">Abogado Titular Asignado:</strong>{" "}
-                  <span className="text-white font-semibold">{planSeleccionado.nivelAbogado}</span>
+                  <strong className={isLight ? "text-slate-600" : "text-slate-400"}>Abogado Titular Asignado:</strong>{" "}
+                  <span className={isLight ? "text-slate-900 font-semibold" : "text-white font-semibold"}>{planSeleccionado.nivelAbogado}</span>
                 </p>
               </div>
 
