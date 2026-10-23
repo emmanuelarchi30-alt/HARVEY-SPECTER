@@ -20,27 +20,25 @@ export function FluidGlassBackground() {
       />
 
       {/* React Bits Ferrofluid Magnetic Liquid Simulation Layer */}
-      <div className="absolute inset-0 opacity-85 dark:opacity-95 transition-opacity duration-700 pointer-events-auto">
+      <div className="absolute inset-0 opacity-100 transition-opacity duration-700 pointer-events-auto">
         <Ferrofluid
-          colors={
-            isLight
-              ? ['#ffffff', '#d97706', '#0284c7']
-              : ['#ffffff', '#f59e0b', '#38bdf8']
-          }
+          colors={['#ffffff', '#ffffff', '#ffffff']}
           scale={1.6}
-          spikeHeight={1.0}
+          spikeHeight={1}
           sharpness={2.5}
           tilt={48}
           fluidity={0.5}
           speed={0.5}
-          magnetism={1.1}
+          magnetism={1}
           mouseInteraction={true}
-          mouseStrength={1.3}
+          mouseStrength={1}
           mouseRadius={0.22}
+          mouseDampening={0.15}
           clickPulse={true}
+          intro={true}
           lightMode={isLight}
           transparent={true}
-          opacity={isLight ? 0.8 : 0.95}
+          opacity={1}
         />
       </div>
 
