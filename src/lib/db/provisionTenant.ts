@@ -131,6 +131,33 @@ export async function provisionTenant(
       ]
     );
 
+    // Registrar también en public.abogados para consulta directa y transparente
+    await client.query(
+      `INSERT INTO public.abogados (id, nombre, cedula, email, contrasena, jerarquia, experiencia_anios, firma_despacho)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       ON CONFLICT (email) DO UPDATE
+       SET nombre = EXCLUDED.nombre,
+           cedula = EXCLUDED.cedula,
+           contrasena = EXCLUDED.contrasena,
+           jerarquia = EXCLUDED.jerarquia,
+           experiencia_anios = EXCLUDED.experiencia_anios,
+           firma_despacho = EXCLUDED.firma_despacho`,
+      [
+        userId,
+        input.nombreAbogado,
+        input.cedula || "1020304050",
+        input.email,
+        input.password,
+        role === "socio"
+          ? "Socio Director (Abogado Mayor)"
+          : role === "senior"
+          ? "Abogado Senior (Abogado Mayor)"
+          : "Abogado Asociado (Menor)",
+        experienciaAnios,
+        input.tenantName,
+      ]
+    ).catch(() => {});
+
     // Confirmar la transacción atómica
     await client.query("COMMIT");
 
