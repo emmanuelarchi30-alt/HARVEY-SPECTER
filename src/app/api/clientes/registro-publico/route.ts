@@ -3,6 +3,7 @@ import { publicPrisma } from "@/lib/db/publicClient";
 import { getTenantClient } from "@/lib/db/tenantClient";
 import { registroClientePublicoSchema } from "@/lib/validation/cliente";
 import { apiError, apiResponse } from "@/lib/http";
+import { ejecutarTriajeLegalIA } from "@/lib/ai/triageLegal";
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,37 +42,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 2. Obtener cliente Prisma exclusivo para el schema aislado del despacho
+    // 2. Obtener abogados registrados en la firma para la asignación por IA
+    const abogadosFirm = await publicPrisma.user.findMany({
+      where: { tenantId: tenant.id },
+      select: {
+        id: true,
+        nombre: true,
+        email: true,
+        role: true,
+        experienciaAnios: true,
+      },
+    });
+
+    // 3. Ejecutar Motor de IA para Triaje Jurídico y Asignación Constitucional
+    const dictamenIA = ejecutarTriajeLegalIA({
+      nombreCliente: data.nombre,
+      tipoDocumento: data.tipoDocumento,
+      numeroDocumento: data.numeroDocumento,
+      condicionEspecial: data.condicionEspecial,
+      tituloCaso: data.tituloCaso,
+      descripcion: data.descripcion,
+      esFuerzaMayor: data.esFuerzaMayor,
+      abogados: abogadosFirm.map((u) => ({
+        id: u.id,
+        nombre: u.nombre,
+        email: u.email,
+        role: u.role,
+        experienciaAnios: u.experienciaAnios,
+      })),
+    });
+
+    // 4. Obtener cliente Prisma exclusivo para el schema aislado del despacho
     const tenantPrisma = getTenantClient(tenant.schemaName);
 
-    // 3. Reglas de Negocio: Prioridad y Nivel de Abogado Exigido
-    const esVulnerable = data.condicionEspecial !== "ninguna";
-    const esAltaVulnerabilidad =
-      data.condicionEspecial === "victima_conflicto" ||
-      data.condicionEspecial === "desplazado";
-
-    const tienePrioridad = esVulnerable || data.esFuerzaMayor;
-
-    // Asignación de prioridad
-    let prioridad: "baja" | "media" | "alta" | "urgente" = "media";
-    let nivelAbogadoExigido: "junior" | "senior" | "socio" = "junior";
-
-    if (data.esFuerzaMayor || esAltaVulnerabilidad) {
-      prioridad = "urgente";
-      nivelAbogadoExigido = "senior"; // Harvey Specter / Abogado con alta experiencia
-    } else if (esVulnerable) {
-      prioridad = "alta";
-      nivelAbogadoExigido = "senior";
-    }
-
-    // Generar número de expediente único oficial
+    // Generar número de radicado oficial único
     const consecutivo = Math.floor(1000 + Math.random() * 9000);
     const anio = new Date().getFullYear();
     const numeroExpediente = `RAD-${anio}-${consecutivo}`;
 
-    // 4. Persistir Cliente y Caso dentro del schema aislado del tenant
+    const textoDictamen = `\n\n[DICTAMEN IA Y FUNDAMENTACIÓN CONSTITUCIONAL]:\n${dictamenIA.fundamentoConstitucional.dictamenJuridico}\n• Normas Superiores: Arts. ${dictamenIA.fundamentoConstitucional.articulos.join(", ")} C.P.\n• Precedente: ${dictamenIA.fundamentoConstitucional.precedente}\n• Asignación: ${dictamenIA.abogadoAsignado.nombre} (${dictamenIA.abogadoAsignado.categoria})`;
+
+    // 5. Persistir Cliente y Caso dentro del schema aislado del tenant
     const { cliente, caso } = await tenantPrisma.$transaction(async (tx) => {
-      // Registrar o actualizar datos del cliente/accionante
       const clienteCreado = await tx.cliente.upsert({
         where: {
           tipoDocumento_numeroDocumento: {
@@ -84,7 +96,7 @@ export async function POST(request: NextRequest) {
           email: data.email || null,
           telefono: data.telefono || null,
           condicionEspecial: data.condicionEspecial,
-          tienePrioridad,
+          tienePrioridad: dictamenIA.requiereAbogadoMayor,
         },
         create: {
           nombre: data.nombre,
@@ -93,20 +105,20 @@ export async function POST(request: NextRequest) {
           email: data.email || null,
           telefono: data.telefono || null,
           condicionEspecial: data.condicionEspecial,
-          tienePrioridad,
+          tienePrioridad: dictamenIA.requiereAbogadoMayor,
         },
       });
 
-      // Crear el expediente del caso vinculado al cliente
       const casoCreado = await tx.caso.create({
         data: {
           numeroExpediente,
           titulo: data.tituloCaso,
-          descripcion: data.descripcion || null,
+          descripcion: data.descripcion ? `${data.descripcion}${textoDictamen}` : textoDictamen.trim(),
           estado: "abierto",
-          prioridad,
+          prioridad: dictamenIA.prioridad,
           esFuerzaMayor: data.esFuerzaMayor,
-          nivelAbogadoExigido,
+          nivelAbogadoExigido: dictamenIA.nivelAbogadoExigido,
+          abogadoAsignadoId: dictamenIA.abogadoAsignado.id,
           clienteId: clienteCreado.id,
         },
       });
@@ -116,10 +128,9 @@ export async function POST(request: NextRequest) {
 
     return apiResponse(
       {
-        mensaje: "Solicitud y expediente radicados exitosamente",
+        mensaje: "Solicitud y expediente radicados exitosamente con asignación jurídica automatizada",
         radicado: caso.numeroExpediente,
         despacho: tenant.name,
-        schema: tenant.schemaName,
         cliente: {
           id: cliente.id,
           nombre: cliente.nombre,
@@ -134,8 +145,10 @@ export async function POST(request: NextRequest) {
           prioridad: caso.prioridad,
           esFuerzaMayor: caso.esFuerzaMayor,
           nivelAbogadoExigido: caso.nivelAbogadoExigido,
+          abogadoAsignadoId: caso.abogadoAsignadoId,
           fechaApertura: caso.fechaApertura,
         },
+        triajeIA: dictamenIA,
       },
       201
     );

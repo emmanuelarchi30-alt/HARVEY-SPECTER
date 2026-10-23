@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Scale, Search, Lock, Mail, ArrowLeft, ShieldCheck, AlertCircle } from "lucide-react";
+import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,7 +37,7 @@ export default function LoginPage() {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Ocurrió un error inesperado");
+        setError("Ocurrió un error inesperado al iniciar sesión");
       }
     } finally {
       setLoading(false);
@@ -43,84 +45,122 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center px-4 py-12">
-      <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-2xl">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-4 font-serif text-2xl font-bold">
-            §
+    <main className="min-h-screen text-slate-100 flex flex-col justify-center items-center px-4 py-12 relative">
+      <FluidGlassBackground />
+
+      <div className="w-full max-w-md space-y-6">
+        {/* Banner para Clientes / Accionantes */}
+        <div className="fluid-glass rounded-2xl p-5 border-amber-500/40 text-center space-y-2.5 shadow-xl">
+          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+            <Search className="w-3.5 h-3.5 text-amber-400" />
+            <span>¿Eres Cliente o Accionante?</span>
           </div>
-          <h1 className="text-2xl font-serif font-bold tracking-tight text-white">
-            Specter & Asociados
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Plataforma Jurídica Multitenant • Colombia
+          <p className="text-xs text-slate-300">
+            Si radicaste una solicitud o tutela, no requieres contraseña de abogado. Consulta tu expediente directamente con tu radicado.
           </p>
+          <Link
+            href="/consultar-caso"
+            className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-amber-950/40 space-x-2"
+          >
+            <Search className="w-4 h-4" />
+            <span>Consultar Estado de mi Caso / Petición</span>
+          </Link>
         </div>
 
-        {error && (
-          <div className="mb-6 p-4 rounded-lg bg-rose-950/50 border border-rose-800/80 text-rose-300 text-sm">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2"
-            >
-              Correo Electrónico
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="harvey.specter@specterlaw.co"
-              className="w-full px-4 py-2.5 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 text-sm transition"
-            />
+        {/* Formulario de Acceso para Abogados */}
+        <div className="fluid-glass rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6">
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-400 mb-2 shadow-lg shadow-amber-950/40">
+              <Scale className="w-6 h-6 text-amber-400" />
+            </div>
+            <h1 className="text-2xl font-serif font-bold tracking-tight text-white">
+              Acceso a la Firma Jurídica
+            </h1>
+            <p className="text-xs text-slate-400">
+              Portal exclusivo para Abogados Litigantes y Socios
+            </p>
           </div>
 
-          <div>
-            <div className="flex justify-between items-center mb-2">
+          {error && (
+            <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-xs flex items-start space-x-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
+              >
+                Correo Institucional
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="harvey.specter@specterlaw.co"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans"
+                />
+              </div>
+            </div>
+
+            <div>
               <label
                 htmlFor="password"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-300"
+                className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
               >
-                Contraseña
+                Contraseña de Acceso
               </label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans"
+                />
+              </div>
             </div>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-4 py-2.5 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 text-sm transition"
-            />
-          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-medium text-sm rounded-lg shadow-lg shadow-amber-900/30 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            {loading ? "Verificando credenciales..." : "Ingresar a la Firma"}
-          </button>
-        </form>
-
-        <div className="mt-8 pt-6 border-t border-slate-800 text-center">
-          <p className="text-sm text-slate-400">
-            ¿Deseas constituir una nueva firma legal?{" "}
-            <Link
-              href="/register"
-              className="text-amber-400 hover:text-amber-300 font-medium transition"
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-amber-950/40 transition duration-150 disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
             >
-              Registrar Despacho
-            </Link>
-          </p>
+              <Scale className="w-4 h-4" />
+              <span>{loading ? "Verificando credenciales..." : "Ingresar al Despacho"}</span>
+            </button>
+          </form>
+
+          <div className="pt-4 border-t border-white/[0.08] text-center space-y-2">
+            <p className="text-xs text-slate-400">
+              ¿Deseas constituir una nueva firma legal?{" "}
+              <Link
+                href="/register"
+                className="text-amber-400 hover:text-amber-300 font-semibold transition"
+              >
+                Registrar Despacho
+              </Link>
+            </p>
+            <div>
+              <Link
+                href="/"
+                className="inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-slate-300 transition"
+              >
+                <ArrowLeft className="w-3 h-3" />
+                <span>Volver al inicio</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </main>

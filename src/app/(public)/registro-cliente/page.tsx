@@ -1,7 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import {
+  Scale,
+  Building2,
+  ShieldCheck,
+  AlertTriangle,
+  Sparkles,
+  Award,
+  BookOpen,
+  ArrowLeft,
+  CheckCircle2,
+  UserCheck,
+  Search,
+  Users
+} from "lucide-react";
+import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
+
+interface DespachoPublico {
+  id: string;
+  name: string;
+  totalAbogados: number;
+  abogados: Array<{
+    id: string;
+    nombre: string;
+    role: string;
+    experienciaAnios: number;
+  }>;
+}
 
 export default function RegistroClientePage() {
   const [nombre, setNombre] = useState("");
@@ -14,6 +41,10 @@ export default function RegistroClientePage() {
   const [descripcion, setDescripcion] = useState("");
   const [esFuerzaMayor, setEsFuerzaMayor] = useState(false);
 
+  // Lista de despachos y despacho seleccionado
+  const [despachos, setDespachos] = useState<DespachoPublico[]>([]);
+  const [despachoSeleccionadoId, setDespachoSeleccionadoId] = useState<string>("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resultado, setResultado] = useState<{
@@ -21,7 +52,41 @@ export default function RegistroClientePage() {
     despacho: string;
     prioridad: string;
     nivelAbogado: string;
+    triajeIA?: {
+      requiereAbogadoMayor: boolean;
+      categoriaCaso: string;
+      prioridad: string;
+      nivelAbogadoExigido: string;
+      abogadoAsignado: {
+        nombre: string;
+        categoria: string;
+        experienciaAnios: number;
+        email: string;
+      };
+      fundamentoConstitucional: {
+        articulos: number[];
+        precedente: string;
+        dictamenJuridico: string;
+      };
+    };
   } | null>(null);
+
+  // Cargar despachos disponibles al iniciar
+  useEffect(() => {
+    async function cargarDespachos() {
+      try {
+        const res = await fetch("/api/tenants/publicos");
+        const json = await res.json();
+        if (json.success && json.data.despachos.length > 0) {
+          setDespachos(json.data.despachos);
+          setDespachoSeleccionadoId(json.data.despachos[0].id);
+        }
+      } catch (err) {
+        console.error("Error al cargar despachos:", err);
+      }
+    }
+    cargarDespachos();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -42,6 +107,7 @@ export default function RegistroClientePage() {
           tituloCaso,
           descripcion,
           esFuerzaMayor,
+          tenantId: despachoSeleccionadoId || undefined,
         }),
       });
 
@@ -56,6 +122,7 @@ export default function RegistroClientePage() {
         despacho: json.data.despacho,
         prioridad: json.data.caso.prioridad,
         nivelAbogado: json.data.caso.nivelAbogadoExigido,
+        triajeIA: json.data.triajeIA,
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -68,102 +135,252 @@ export default function RegistroClientePage() {
     }
   }
 
+  const despachoActivo = despachos.find((d) => d.id === despachoSeleccionadoId);
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div className="min-h-screen text-slate-100 flex flex-col font-sans relative">
+      <FluidGlassBackground />
+
+      {/* Header Fluid Glass */}
+      <header className="border-b border-white/[0.08] fluid-glass sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="w-8 h-8 rounded bg-amber-500/20 border border-amber-500/40 text-amber-400 font-serif font-bold flex items-center justify-center text-lg">
-              §
-            </span>
-            <span className="font-serif font-bold text-lg text-white tracking-tight">
-              Specter & Asociados Colombia
-            </span>
+          <Link href="/" className="flex items-center space-x-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-400 flex items-center justify-center shadow-lg shadow-amber-950/40">
+              <Scale className="w-5 h-5 text-amber-400" />
+            </div>
+            <div>
+              <span className="font-serif font-bold text-lg text-white tracking-tight block leading-none">
+                Specter & Asociados Colombia
+              </span>
+              <span className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">
+                Atención Ciudadana & Litigio de Alto Impacto
+              </span>
+            </div>
           </Link>
 
-          <Link
-            href="/"
-            className="text-xs sm:text-sm text-slate-400 hover:text-white transition"
-          >
-            ← Volver al Inicio
-          </Link>
+          <div className="flex items-center space-x-3">
+            <Link
+              href="/consultar-caso"
+              className="text-xs text-slate-300 hover:text-white font-medium flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-white/10 fluid-glass-pill transition"
+            >
+              <Search className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Consultar mi Caso</span>
+            </Link>
+            <Link
+              href="/constitucion"
+              target="_blank"
+              className="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 transition"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Constitución 1991</span>
+            </Link>
+            <Link
+              href="/"
+              className="text-xs text-slate-400 hover:text-white transition flex items-center space-x-1"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Inicio</span>
+            </Link>
+          </div>
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-12">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div className="fluid-glass rounded-3xl p-6 sm:p-10 shadow-2xl">
           <div className="mb-8">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Atención Ciudadana y Víctimas</span>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full fluid-glass-pill text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Mesa de Reparto & Litigio Estratégico</span>
             </div>
             <h1 className="text-3xl font-serif font-bold text-white tracking-tight">
-              Registro de Cliente y Radicación de Caso
+              Radicación de Caso y Asignación Automatizada (IA)
             </h1>
             <p className="text-slate-400 text-sm mt-1">
-              Complete sus datos para solicitar representación legal. La plataforma asigna prioridad preferencial a víctimas del conflicto y casos urgentes.
+              Complete los hechos y pretensiones de su solicitud. El motor de Inteligencia Artificial evaluará su condición bajo el marco constitucional colombiano y le asignará un abogado con la jerarquía idónea.
             </p>
           </div>
 
           {resultado ? (
-            <div className="p-8 rounded-xl bg-slate-950 border border-emerald-500/40 text-left space-y-4">
-              <div className="flex items-center space-x-3 text-emerald-400">
-                <span className="text-3xl">✓</span>
-                <h2 className="text-xl font-bold font-serif text-white">
-                  ¡Caso Radicado Exitosamente!
-                </h2>
+            <div className="p-8 rounded-2xl bg-slate-950/80 border border-emerald-500/40 text-left space-y-6">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center space-x-3 text-emerald-400">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                  <div>
+                    <h2 className="text-xl font-bold font-serif text-white">
+                      ¡Expediente Radicado Exitosamente!
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      Firma receptora asignada: <strong className="text-white">{resultado.despacho}</strong>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-lg">
+                  {resultado.radicado}
+                </div>
               </div>
 
-              <div className="bg-slate-900 p-4 rounded-lg border border-slate-800 space-y-2 text-sm">
+              {/* Dictamen de la Inteligencia Artificial Jurídica */}
+              {resultado.triajeIA && (
+                <div
+                  className={`p-6 rounded-2xl border space-y-4 ${
+                    resultado.triajeIA.requiereAbogadoMayor
+                      ? "bg-amber-950/20 border-amber-500/40 text-amber-200"
+                      : "bg-slate-900/60 border-white/10 text-slate-300"
+                  }`}
+                >
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-xs uppercase tracking-wider font-bold flex items-center gap-2 text-amber-400">
+                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      Dictamen Jurídico Automatizado (IA)
+                    </span>
+                    <span
+                      className={`text-[11px] font-bold uppercase px-3 py-1 rounded-full ${
+                        resultado.triajeIA.requiereAbogadoMayor
+                          ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
+                          : "bg-blue-500/20 text-blue-300 border border-blue-500/40"
+                      }`}
+                    >
+                      {resultado.triajeIA.requiereAbogadoMayor
+                        ? "Especial Protección / Abogado Mayor"
+                        : "Trámite Ordinario / Abogado Menor"}
+                    </span>
+                  </div>
+
+                  {/* Asignación de Abogado por Jerarquía */}
+                  <div className="p-4 rounded-xl bg-slate-950/90 border border-white/10 space-y-2">
+                    <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                      <UserCheck className="w-3.5 h-3.5 text-amber-400" />
+                      Abogado Asignado al Expediente:
+                    </p>
+                    <p className="text-lg font-serif font-bold text-white flex items-center gap-2">
+                      <span>⚖️ {resultado.triajeIA.abogadoAsignado.nombre}</span>
+                      <span className="text-xs font-sans font-normal px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        {resultado.triajeIA.abogadoAsignado.categoria}
+                      </span>
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      Experiencia procesal:{" "}
+                      <strong className="text-slate-200">
+                        {resultado.triajeIA.abogadoAsignado.experienciaAnios} años en litigio
+                      </strong>{" "}
+                      • Correo institucional: {resultado.triajeIA.abogadoAsignado.email}
+                    </p>
+                  </div>
+
+                  {/* Fundamentación Constitucional Colombiana */}
+                  <div className="space-y-2 text-xs">
+                    <p className="text-slate-300 leading-relaxed font-medium">
+                      {resultado.triajeIA.fundamentoConstitucional.dictamenJuridico}
+                    </p>
+                    <div className="flex items-center flex-wrap gap-2 pt-1">
+                      <span className="text-slate-400">Artículos Superiores aplicados:</span>
+                      {resultado.triajeIA.fundamentoConstitucional.articulos.map((art) => (
+                        <Link
+                          key={art}
+                          href="/constitucion"
+                          target="_blank"
+                          className="px-2.5 py-1 rounded-lg bg-slate-800 text-amber-400 font-mono text-[11px] hover:bg-amber-500 hover:text-slate-950 transition font-bold"
+                        >
+                          Art. {art} C.P.
+                        </Link>
+                      ))}
+                    </div>
+                    <p className="text-slate-400 text-[11px]">
+                      <strong>Precedente vinculante:</strong>{" "}
+                      {resultado.triajeIA.fundamentoConstitucional.precedente}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <div className="text-xs text-slate-400 space-y-1">
                 <p>
-                  <strong className="text-slate-300">Número de Radicado:</strong>{" "}
-                  <span className="font-mono font-bold text-emerald-400 text-base">
-                    {resultado.radicado}
-                  </span>
+                  • Su expediente ha sido guardado con radicado oficial y garantía de secreto profesional y reserva legal.
                 </p>
                 <p>
-                  <strong className="text-slate-300">Firma Asignada:</strong>{" "}
-                  <span className="text-white">{resultado.despacho}</span>
-                </p>
-                <p>
-                  <strong className="text-slate-300">Nivel de Prioridad:</strong>{" "}
-                  <span className="capitalize px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    {resultado.prioridad}
-                  </span>
-                </p>
-                <p>
-                  <strong className="text-slate-300">Equipo Jurídico Exigido:</strong>{" "}
-                  <span className="text-white font-semibold">
-                    {resultado.nivelAbogado === "senior"
-                      ? "Abogado Senior / Socio Titular (Alta Experiencia)"
-                      : "Abogado Asociado"}
-                  </span>
+                  • Podrá consultar el avance de su caso en cualquier momento desde el Portal del Ciudadano utilizando su número de radicado.
                 </p>
               </div>
 
-              <p className="text-xs text-slate-400">
-                Guarde su número de radicado. Un abogado de la firma revisará su caso de acuerdo con el orden de prelación.
-              </p>
-
-              <button
-                onClick={() => setResultado(null)}
-                className="mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-sm font-medium transition cursor-pointer"
-              >
-                Radicar Otro Caso
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Link
+                  href="/consultar-caso"
+                  className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-xl text-xs font-semibold transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-950/40"
+                >
+                  <Search className="w-4 h-4" />
+                  <span>Consultar Estado de este Radicado</span>
+                </Link>
+                <button
+                  onClick={() => setResultado(null)}
+                  className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold transition cursor-pointer"
+                >
+                  Radicar Otra Solicitud
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <div className="p-4 rounded-lg bg-rose-950/50 border border-rose-800 text-rose-300 text-sm">
-                  {error}
+                <div className="p-4 rounded-xl bg-rose-950/50 border border-rose-800 text-rose-300 text-sm flex items-start space-x-3">
+                  <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-rose-200">Error en el trámite</p>
+                    <p className="text-xs text-rose-300/90 mt-0.5">{error}</p>
+                  </div>
                 </div>
               )}
 
+              {/* Sección 0: Selección de Despacho Jurídico Destinatario */}
+              <div className="space-y-3 pb-2 border-b border-white/[0.08]">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <Building2 className="w-4 h-4 text-amber-400" />
+                    Firma Legal Receptora
+                  </span>
+                  <span className="text-[11px] text-slate-400">
+                    {despachos.length} firma(s) disponible(s)
+                  </span>
+                </div>
+
+                {despachos.length > 0 ? (
+                  <div className="space-y-2">
+                    <select
+                      value={despachoSeleccionadoId}
+                      onChange={(e) => setDespachoSeleccionadoId(e.target.value)}
+                      className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm font-medium"
+                    >
+                      {despachos.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name} ({d.totalAbogados} abogados inscritos)
+                        </option>
+                      ))}
+                    </select>
+
+                    {despachoActivo && (
+                      <div className="p-3.5 rounded-xl bg-slate-950/50 border border-white/[0.05] text-xs space-y-1">
+                        <p className="text-slate-300 font-medium">
+                          Despacho: <strong className="text-white">{despachoActivo.name}</strong>
+                        </p>
+                        <p className="text-slate-400">
+                          Equipo disponible: {despachoActivo.abogados.map(a => `${a.nombre} (${a.role})`).join(", ") || "Abogados titulares de guardia"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-slate-950/60 border border-white/10 text-xs text-slate-400">
+                    Cargando firmas disponibles...
+                  </div>
+                )}
+              </div>
+
               {/* Sección 1: Datos Personales */}
               <div className="space-y-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-400 border-b border-slate-800 pb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 block pb-1 border-b border-white/[0.08]">
                   1. Identificación del Cliente / Accionante
-                </h3>
+                </span>
 
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1">
@@ -175,7 +392,7 @@ export default function RegistroClientePage() {
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
                     placeholder="Ej. María Pérez Gómez"
-                    className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                   />
                 </div>
 
@@ -187,7 +404,7 @@ export default function RegistroClientePage() {
                     <select
                       value={tipoDocumento}
                       onChange={(e) => setTipoDocumento(e.target.value)}
-                      className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                     >
                       <option value="CC">Cédula de Ciudadanía (CC)</option>
                       <option value="TI">Tarjeta de Identidad (TI)</option>
@@ -207,7 +424,7 @@ export default function RegistroClientePage() {
                       value={numeroDocumento}
                       onChange={(e) => setNumeroDocumento(e.target.value)}
                       placeholder="Ej. 1020304050"
-                      className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                     />
                   </div>
                 </div>
@@ -222,7 +439,7 @@ export default function RegistroClientePage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="maria@ejemplo.com"
-                      className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                     />
                   </div>
 
@@ -235,56 +452,56 @@ export default function RegistroClientePage() {
                       value={telefono}
                       onChange={(e) => setTelefono(e.target.value)}
                       placeholder="300 123 4567"
-                      className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Sección 2: Condición Especial de Protección */}
-              <div className="space-y-4 pt-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-400 border-b border-slate-800 pb-2">
+              <div className="space-y-4 pt-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 block pb-1 border-b border-white/[0.08]">
                   2. Condición de Especial Protección Constitucional
-                </h3>
+                </span>
 
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                    ¿Pertenece o representa a alguna de estas poblaciones?
+                    ¿Pertenece a alguna de estas poblaciones amparadas constitucionalmente?
                   </label>
                   <select
                     value={condicionEspecial}
                     onChange={(e) => setCondicionEspecial(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-750 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    className="w-full px-4 py-3 bg-slate-950/70 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm font-medium"
                   >
-                    <option value="ninguna">Ninguna / Ciudadano General</option>
+                    <option value="ninguna">Ninguna / Ciudadano General (Trámite Ordinario)</option>
                     <option value="victima_conflicto">
-                      Víctima del Conflicto Armado (Ley 1448 de 2011) — Prioridad Máxima
+                      Víctima del Conflicto Armado Interno (Ley 1448 de 2011) — Asigna Abogado Mayor
                     </option>
                     <option value="desplazado">
-                      Persona en Situación de Desplazamiento Forzado — Prioridad Máxima
+                      Persona en Desplazamiento Forzado (Sentencia T-025) — Asigna Abogado Mayor
                     </option>
                     <option value="migrante">
-                      Población Migrante o Refugiada
+                      Población Migrante o Refugiada en Estado de Vulnerabilidad
                     </option>
                     <option value="madre_cabeza_familia">
                       Madre Cabeza de Familia
                     </option>
                     <option value="adulto_mayor">
-                      Adulto Mayor / Sujeto de Especial Protección
+                      Adulto Mayor / Sujeto en Debilidad Manifiesta
                     </option>
                     <option value="otro">Otra Condición de Vulnerabilidad</option>
                   </select>
-                  <p className="text-[11px] text-slate-400 mt-1.5">
-                    Las víctimas del conflicto y desplazados son catalogados con <strong>Prioridad Urgente</strong> y sus expedientes se remiten directamente a los abogados de mayor experiencia de la firma.
+                  <p className="text-[11px] text-slate-400 mt-2">
+                    ⚖️ Las víctimas del conflicto armado y personas en situación de desplazamiento forzado son clasificadas con <strong>Prioridad Urgente</strong> y la plataforma les asigna de forma obligatoria a un <strong>Abogado Mayor (Socio Titular o Senior)</strong>.
                   </p>
                 </div>
               </div>
 
-              {/* Sección 3: Datos del Caso / Pretensión */}
-              <div className="space-y-4 pt-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-400 border-b border-slate-800 pb-2">
+              {/* Sección 3: Datos del Caso */}
+              <div className="space-y-4 pt-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 block pb-1 border-b border-white/[0.08]">
                   3. Datos del Caso o Solicitud Jurídica
-                </h3>
+                </span>
 
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1">
@@ -295,8 +512,8 @@ export default function RegistroClientePage() {
                     required
                     value={tituloCaso}
                     onChange={(e) => setTituloCaso(e.target.value)}
-                    placeholder="Ej. Acción de Tutela por Derecho Fundamental a la Salud"
-                    className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    placeholder="Ej. Acción de Tutela por Derecho Fundamental a la Salud / Restitución"
+                    className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                   />
                 </div>
 
@@ -308,12 +525,12 @@ export default function RegistroClientePage() {
                     rows={4}
                     value={descripcion}
                     onChange={(e) => setDescripcion(e.target.value)}
-                    placeholder="Describa brevemente la situación, entidades involucradas y derechos vulnerados..."
-                    className="w-full px-4 py-2 bg-slate-950 border border-slate-750 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
+                    placeholder="Describa brevemente los hechos, entidades o personas involucradas y derechos vulnerados..."
+                    className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm"
                   />
                 </div>
 
-                <div className="p-4 rounded-lg bg-slate-950 border border-slate-800 flex items-start space-x-3">
+                <div className="p-4 rounded-xl bg-slate-950/60 border border-white/10 flex items-start space-x-3">
                   <input
                     id="esFuerzaMayor"
                     type="checkbox"
@@ -325,10 +542,10 @@ export default function RegistroClientePage() {
                     htmlFor="esFuerzaMayor"
                     className="text-xs text-slate-300 cursor-pointer"
                   >
-                    <strong className="text-white block">
+                    <strong className="text-white block font-medium">
                       ¿Es un caso de Fuerza Mayor o Riesgo Vital Inminente?
                     </strong>
-                    Marque esta casilla si existe riesgo irreparable a la vida, integridad o libertad. Esto obligará al sistema a remitir el caso a un abogado Senior o Socio Director.
+                    Active esta casilla si existe peligro inminente e irremediable a la vida, salud o libertad personal. El sistema derivará el caso de inmediato a un Abogado Mayor.
                   </label>
                 </div>
               </div>
@@ -337,11 +554,14 @@ export default function RegistroClientePage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-medium text-sm rounded-lg shadow-lg shadow-amber-900/30 transition disabled:opacity-50 cursor-pointer"
+                  className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-xl shadow-amber-950/40 transition disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
                 >
-                  {loading
-                    ? "Registrando cliente y radicando caso..."
-                    : "Radicar Caso ante la Firma Jurídica"}
+                  <Scale className="w-4 h-4" />
+                  <span>
+                    {loading
+                      ? "Procesando triaje de IA y radicando caso..."
+                      : "Radicar Caso ante la Firma Jurídica"}
+                  </span>
                 </button>
               </div>
             </form>
