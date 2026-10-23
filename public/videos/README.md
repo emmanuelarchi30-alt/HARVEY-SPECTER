@@ -1,0 +1,1 @@
+Coloca en esta carpeta el video de fondo con el nombre `fondo-inicio.mp4`.
