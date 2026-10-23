@@ -72,6 +72,16 @@ export async function POST(request: NextRequest) {
       })),
     });
 
+    // Si seleccionó Fast Track (Pago Grande), se exige Abogado Mayor y tiempo de estudio ultra-corto
+    if (data.modalidadArancel === "fast_track") {
+      dictamenIA.requiereAbogadoMayor = true;
+      dictamenIA.prioridad = "urgente";
+      dictamenIA.nivelAbogadoExigido = "senior";
+      dictamenIA.fundamentoConstitucional.dictamenJuridico =
+        `[FAST TRACK • PAGO GRANDE CONTRATADO]: Modalidad prioritaria con tiempo de estudio garantizado en menos de 12 horas. Asignación inmediata del Socio Director de la firma para estructuración de Medida Cautelar Provisional Previa (Dec. 2591/91 Art. 7).\n\n` +
+        dictamenIA.fundamentoConstitucional.dictamenJuridico;
+    }
+
     // 4. Obtener cliente Prisma exclusivo para el schema aislado del despacho
     const tenantPrisma = getTenantClient(tenant.schemaName);
 
@@ -80,7 +90,16 @@ export async function POST(request: NextRequest) {
     const anio = new Date().getFullYear();
     const numeroExpediente = `RAD-${anio}-${consecutivo}`;
 
-    const textoDictamen = `\n\n[DICTAMEN IA Y FUNDAMENTACIÓN CONSTITUCIONAL]:\n${dictamenIA.fundamentoConstitucional.dictamenJuridico}\n• Normas Superiores: Arts. ${dictamenIA.fundamentoConstitucional.articulos.join(", ")} C.P.\n• Precedente: ${dictamenIA.fundamentoConstitucional.precedente}\n• Asignación: ${dictamenIA.abogadoAsignado.nombre} (${dictamenIA.abogadoAsignado.categoria})`;
+    const arancelTexto =
+      data.modalidadArancel === "fast_track"
+        ? "Fast Track ($2.500.000 COP) • Tiempo de Estudio: Menos de 12 Horas"
+        : data.modalidadArancel === "urgente"
+        ? "Litigio Preferente ($850.000 COP) • Tiempo de Estudio: 24 Horas"
+        : data.modalidadArancel === "ordinario"
+        ? "Trámite Ordinario ($350.000 COP) • Tiempo de Estudio: 48 Horas"
+        : "Amparo Constitucional Gratuito ($0 COP) • Ley 1448 de 2011";
+
+    const textoDictamen = `\n\n[DICTAMEN IA Y FUNDAMENTACIÓN CONSTITUCIONAL]:\n${dictamenIA.fundamentoConstitucional.dictamenJuridico}\n• Modalidad Contratada: ${arancelTexto}\n• Normas Superiores: Arts. ${dictamenIA.fundamentoConstitucional.articulos.join(", ")} C.P.\n• Precedente: ${dictamenIA.fundamentoConstitucional.precedente}\n• Asignación: ${dictamenIA.abogadoAsignado.nombre} (${dictamenIA.abogadoAsignado.categoria})`;
 
     // 5. Persistir Cliente y Caso dentro del schema aislado del tenant
     const { cliente, caso } = await tenantPrisma.$transaction(async (tx) => {

@@ -9,8 +9,11 @@ export async function POST(request: NextRequest) {
     const radicado = typeof body.radicado === "string" ? body.radicado.trim() : "";
     const numeroDocumento = typeof body.numeroDocumento === "string" ? body.numeroDocumento.trim() : "";
 
-    if (!radicado && !numeroDocumento) {
-      return apiError("Debe ingresar un número de radicado o un número de documento", 400);
+    if (!radicado || !numeroDocumento) {
+      return apiError(
+        "Por estrictas razones de reserva procesal y confidencialidad legal, es obligatorio suministrar tanto el Número de Radicado como el Número de Cédula o Documento de Identidad.",
+        400
+      );
     }
 
     // 1. Obtener todos los despachos registrados
@@ -64,17 +67,13 @@ export async function POST(request: NextRequest) {
       try {
         const tenantPrisma = getTenantClient(t.schemaName);
 
-        const whereClause: any = {};
-        if (radicado) {
-          whereClause.numeroExpediente = { equals: radicado, mode: "insensitive" };
-        } else if (numeroDocumento) {
-          whereClause.cliente = {
-            numeroDocumento: { equals: numeroDocumento },
-          };
-        }
-
         const casos = await tenantPrisma.caso.findMany({
-          where: whereClause,
+          where: {
+            numeroExpediente: { equals: radicado, mode: "insensitive" },
+            cliente: {
+              numeroDocumento: { equals: numeroDocumento },
+            },
+          },
           include: {
             cliente: true,
           },

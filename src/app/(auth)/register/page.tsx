@@ -12,12 +12,17 @@ import {
   GraduationCap,
   ArrowLeft,
   AlertCircle,
-  UserCheck
+  UserCheck,
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
+import { HeaderControls } from "@/components/ui/HeaderControls";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isLight = theme === "light";
+
   const [tenantName, setTenantName] = useState("");
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -66,18 +71,30 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen text-slate-100 flex flex-col justify-center items-center px-4 py-12 relative">
+    <main
+      className={`min-h-screen flex flex-col justify-center items-center px-4 py-12 relative transition-colors duration-300 ${
+        isLight ? "text-slate-800" : "text-slate-100"
+      }`}
+    >
       <FluidGlassBackground />
 
-      <div className="w-full max-w-lg fluid-glass rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6">
+      <div className="absolute top-5 right-5 z-50">
+        <HeaderControls />
+      </div>
+
+      <div className="w-full max-w-lg fluid-glass rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6 relative z-10">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-400 mb-2 shadow-lg shadow-amber-950/40">
-            <Scale className="w-6 h-6 text-amber-400" />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 mb-2 shadow-lg shadow-amber-950/20">
+            <Scale className="w-6 h-6 text-amber-500" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-white">
+          <h1
+            className={`text-2xl sm:text-3xl font-serif font-bold tracking-tight ${
+              isLight ? "text-slate-900" : "text-white"
+            }`}
+          >
             Constitución de Firma Jurídica
           </h1>
-          <p className="text-xs text-slate-400">
+          <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>
             Aprovisiona tu despacho con bóveda aislada y reglas automáticas de litigio
           </p>
         </div>
@@ -93,7 +110,9 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="tenantName"
-              className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
+              className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                isLight ? "text-slate-700" : "text-slate-300"
+              }`}
             >
               Nombre Oficial de la Firma / Despacho
             </label>
@@ -105,105 +124,78 @@ export default function RegisterPage() {
                 required
                 value={tenantName}
                 onChange={(e) => setTenantName(e.target.value)}
-                placeholder="Ej. Specter & Litt Abogados Colombia"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition"
+                placeholder="Ej. De La Espriella Lawyers / Castro & Asociados"
+                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
+                  isLight
+                    ? "bg-white/90 border-slate-200 text-slate-900"
+                    : "bg-slate-950/70 border-white/10 text-white"
+                }`}
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="nombre"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
-              >
-                Abogado Titular Fundador
-              </label>
-              <div className="relative">
-                <UserCheck className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
-                <input
-                  id="nombre"
-                  type="text"
-                  required
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  placeholder="Ej. Harvey Specter"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="role"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
-              >
-                Jerarquía Legal
-              </label>
-              <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans"
-              >
-                <option value="socio">Socio Director (Abogado Mayor)</option>
-                <option value="senior">Abogado Senior (Litigio)</option>
-                <option value="junior">Abogado Menor (Asociado)</option>
-              </select>
+          <div>
+            <label
+              htmlFor="nombre"
+              className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                isLight ? "text-slate-700" : "text-slate-300"
+              }`}
+            >
+              Nombre del Abogado Fundador / Titular
+            </label>
+            <div className="relative">
+              <UserCheck className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <input
+                id="nombre"
+                type="text"
+                required
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Ej. Dr. Harvey Specter"
+                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
+                  isLight
+                    ? "bg-white/90 border-slate-200 text-slate-900"
+                    : "bg-slate-950/70 border-white/10 text-white"
+                }`}
+              />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="experienciaAnios"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
-              >
-                Años de Litigio / Práctica
-              </label>
-              <div className="relative">
-                <GraduationCap className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
-                <input
-                  id="experienciaAnios"
-                  type="number"
-                  min="0"
-                  max="60"
-                  required
-                  value={experienciaAnios}
-                  onChange={(e) => setExperienciaAnios(Number(e.target.value))}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-mono"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
-              >
-                Correo Institucional
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="harvey@specterlaw.co"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition"
-                />
-              </div>
+          <div>
+            <label
+              htmlFor="email"
+              className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                isLight ? "text-slate-700" : "text-slate-300"
+              }`}
+            >
+              Correo Electrónico Institucional
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="fundador@firma.co"
+                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
+                  isLight
+                    ? "bg-white/90 border-slate-200 text-slate-900"
+                    : "bg-slate-950/70 border-white/10 text-white"
+                }`}
+              />
             </div>
           </div>
 
           <div>
             <label
               htmlFor="password"
-              className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5"
+              className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                isLight ? "text-slate-700" : "text-slate-300"
+              }`}
             >
-              Contraseña de Acceso (mínimo 8 caracteres)
+              Contraseña de Acceso
             </label>
             <div className="relative">
               <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
@@ -214,38 +206,115 @@ export default function RegisterPage() {
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition"
+                placeholder="Mínimo 8 caracteres"
+                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
+                  isLight
+                    ? "bg-white/90 border-slate-200 text-slate-900"
+                    : "bg-slate-950/70 border-white/10 text-white"
+                }`}
               />
             </div>
           </div>
 
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-xl shadow-amber-950/40 transition duration-150 disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
-            >
-              <Scale className="w-4 h-4" />
-              <span>{loading ? "Aprovisionando Bóveda..." : "Constituir Firma Jurídica"}</span>
-            </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="role"
+                className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                  isLight ? "text-slate-700" : "text-slate-300"
+                }`}
+              >
+                Jerarquía Legal
+              </label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition ${
+                  isLight
+                    ? "bg-white/90 border-slate-200 text-slate-900"
+                    : "bg-slate-950/70 border-white/10 text-white"
+                }`}
+              >
+                <option value="socio" className={isLight ? "text-slate-900" : "text-white"}>Socio Director (Abogado Mayor)</option>
+                <option value="senior" className={isLight ? "text-slate-900" : "text-white"}>Abogado Senior (Abogado Mayor)</option>
+                <option value="junior" className={isLight ? "text-slate-900" : "text-white"}>Abogado Asociado (Menor)</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="experienciaAnios"
+                className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                  isLight ? "text-slate-700" : "text-slate-300"
+                }`}
+              >
+                Años de Experiencia
+              </label>
+              <div className="relative">
+                <GraduationCap className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+                <input
+                  id="experienciaAnios"
+                  type="number"
+                  min={1}
+                  max={50}
+                  required
+                  value={experienciaAnios}
+                  onChange={(e) => setExperienciaAnios(Number(e.target.value))}
+                  className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
+                    isLight
+                      ? "bg-white/90 border-slate-200 text-slate-900"
+                      : "bg-slate-950/70 border-white/10 text-white"
+                  }`}
+                />
+              </div>
+            </div>
           </div>
+
+          <div
+            className={`p-3.5 rounded-xl border text-xs space-y-1 ${
+              isLight ? "bg-amber-50/70 border-amber-200 text-slate-700" : "bg-slate-950/40 border-white/[0.06] text-slate-300"
+            }`}
+          >
+            <p className="flex items-center gap-1.5 text-amber-500 font-semibold">
+              <ShieldCheck className="w-4 h-4" />
+              Aislamiento Multitenant de Esquema PostgreSQL
+            </p>
+            <p className={isLight ? "text-slate-600" : "text-slate-400"}>
+              Al registrarse, se ejecutará una transacción DDL con <code>CREATE SCHEMA</code> dedicado y plantillas SQL para sus clientes, casos y documentos protegidos.
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-amber-950/40 transition duration-150 disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
+          >
+            <Building2 className="w-4 h-4" />
+            <span>
+              {loading
+                ? "Aprovisionando schema y base de datos..."
+                : "Aprovisionar Firma & Iniciar Litigio"}
+            </span>
+          </button>
         </form>
 
         <div className="pt-4 border-t border-white/[0.08] text-center space-y-2">
-          <p className="text-xs text-slate-400">
-            ¿Ya tienes un despacho registrado?{" "}
+          <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+            ¿Tu firma ya está constituida?{" "}
             <Link
               href="/login"
-              className="text-amber-400 hover:text-amber-300 font-semibold transition"
+              className="text-amber-500 hover:text-amber-600 font-semibold transition"
             >
-              Iniciar Sesión
+              Ingresar al Despacho
             </Link>
           </p>
           <div>
             <Link
               href="/"
-              className="inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-slate-300 transition"
+              className={`inline-flex items-center space-x-1 text-xs transition ${
+                isLight ? "text-slate-500 hover:text-slate-800" : "text-slate-500 hover:text-slate-300"
+              }`}
             >
               <ArrowLeft className="w-3 h-3" />
               <span>Volver al inicio</span>

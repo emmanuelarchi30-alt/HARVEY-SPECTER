@@ -37,6 +37,7 @@ export const registroClientePublicoSchema = z.object({
     .max(150),
   descripcion: z.string().optional(),
   esFuerzaMayor: z.boolean().default(false),
+  modalidadArancel: z.enum(["amparo_victimas", "ordinario", "urgente", "fast_track"]).default("amparo_victimas"),
   tenantId: z.string().optional(), // ID del despacho al que acude
 });
 

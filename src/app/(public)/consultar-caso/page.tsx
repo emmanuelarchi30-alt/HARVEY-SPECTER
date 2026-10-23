@@ -17,6 +17,9 @@ import {
   BookOpen
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
+import { HeaderControls } from "@/components/ui/HeaderControls";
+import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ExpedienteEncontrado {
   despacho: { id: string; name: string };
@@ -50,6 +53,10 @@ interface ExpedienteEncontrado {
 }
 
 export default function ConsultarCasoPage() {
+  const { theme } = useTheme();
+  const { t } = useLanguage();
+  const isLight = theme === "light";
+
   const [radicado, setRadicado] = useState("");
   const [numeroDocumento, setNumeroDocumento] = useState("");
   const [loading, setLoading] = useState(false);
@@ -61,8 +68,8 @@ export default function ConsultarCasoPage() {
     setError(null);
     setExpediente(null);
 
-    if (!radicado.trim() && !numeroDocumento.trim()) {
-      setError("Por favor ingrese un número de radicado o número de documento.");
+    if (!radicado.trim() || !numeroDocumento.trim()) {
+      setError("Por motivos de seguridad y reserva del sumario, es OBLIGATORIO suministrar tanto el Número de Radicado como su Cédula o Documento de Identidad.");
       return;
     }
 
@@ -97,34 +104,41 @@ export default function ConsultarCasoPage() {
   }
 
   return (
-    <div className="min-h-screen text-slate-100 flex flex-col font-sans relative">
+    <div className={`min-h-screen flex flex-col font-sans relative ${isLight ? "text-slate-800" : "text-slate-100"}`}>
       <FluidGlassBackground />
 
       {/* Header con estilo Fluid Glass */}
       <header className="border-b border-white/[0.08] fluid-glass sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-400 flex items-center justify-center shadow-lg shadow-amber-950/40">
-              <Scale className="w-5 h-5 text-amber-400" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 flex items-center justify-center shadow-lg shadow-amber-950/20">
+              <Scale className="w-5 h-5 text-amber-500" />
             </div>
             <div>
-              <span className="font-serif font-bold text-lg text-white tracking-tight block leading-none">
+              <span className={`font-serif font-bold text-lg tracking-tight block leading-none ${isLight ? "text-slate-900" : "text-white"}`}>
                 Portal del Ciudadano
               </span>
-              <span className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">
+              <span className="text-[10px] text-amber-500 font-semibold tracking-wider uppercase">
                 Consulta de Expedientes & Tutelas
               </span>
             </div>
           </Link>
 
           <div className="flex items-center space-x-3">
+            <HeaderControls />
+            <Link
+              href="/aranceles"
+              className="text-xs font-medium px-3 py-1.5 rounded-xl border border-white/10 fluid-glass-pill transition"
+            >
+              <span>Aranceles & Tiempos</span>
+            </Link>
             <Link
               href="/constitucion"
               target="_blank"
-              className="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 transition"
+              className="hidden sm:flex text-xs text-amber-500 font-medium items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 transition"
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Constitución 1991</span>
+              <span>Constitución 1991</span>
             </Link>
             <Link
               href="/"
@@ -147,8 +161,8 @@ export default function ConsultarCasoPage() {
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
             Consulte el Estado de su Proceso o Petición
           </h1>
-          <p className="text-slate-400 text-sm">
-            Ingrese su número de radicado oficial asignado (ej. <code className="text-amber-400">RAD-2026-7658</code>) o su número de documento de identidad para verificar el abogado asignado y las actuaciones procesales.
+          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+            Ingrese obligatoriamente <strong>AMBOS datos</strong>: su número de radicado oficial asignado (ej. <code className="text-amber-500 font-bold">RAD-2026-7658</code>) y su cédula o documento de identidad para verificar el abogado asignado y las actuaciones procesales.
           </p>
         </div>
 
@@ -158,12 +172,13 @@ export default function ConsultarCasoPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Número de Radicado (Opcional)
+                  Número de Radicado (Obligatorio)
                 </label>
                 <div className="relative">
                   <FileText className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
                   <input
                     type="text"
+                    required
                     value={radicado}
                     onChange={(e) => setRadicado(e.target.value)}
                     placeholder="Ej. RAD-2026-7658"
@@ -174,12 +189,13 @@ export default function ConsultarCasoPage() {
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Número de Documento (Cédula / PPT)
+                  Número de Documento / Cédula (Obligatorio)
                 </label>
                 <div className="relative">
                   <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
                   <input
                     type="text"
+                    required
                     value={numeroDocumento}
                     onChange={(e) => setNumeroDocumento(e.target.value)}
                     placeholder="Ej. 1020304050"

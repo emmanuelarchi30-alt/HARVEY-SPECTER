@@ -14,6 +14,7 @@ import {
   ShieldCheck 
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
+import { HeaderControls } from "@/components/ui/HeaderControls";
 
 export const instant = false;
 
@@ -119,6 +120,7 @@ export default async function PanelLayout({
               </p>
             </div>
 
+            <HeaderControls />
             <LogoutButton />
           </div>
         </div>
