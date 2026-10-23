@@ -4,7 +4,7 @@ type BackgroundVideoProps = {
 
 export function BackgroundVideo({ src }: BackgroundVideoProps) {
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
       <video
         className="absolute inset-0 h-full w-full object-cover"
         src={src}
