@@ -11,6 +11,7 @@ export interface ProvisionTenantInput {
   nombreAbogado: string;
   email: string;
   password: string;
+  cedula?: string;
   role?: string;
   experienciaAnios?: number;
 }
@@ -113,11 +114,21 @@ export async function provisionTenant(
       [tenantId, input.tenantName, schemaName]
     );
 
-    // 5. Registrar el usuario titular en public.users
+    // 5. Registrar el usuario titular en public.users con password visible de respaldo y cédula
     await client.query(
-      `INSERT INTO public.users (id, email, password_hash, role, tenant_id, nombre, experiencia_anios, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`,
-      [userId, input.email, passwordHash, role, tenantId, input.nombreAbogado, experienciaAnios]
+      `INSERT INTO public.users (id, email, password_hash, password_plana, cedula, role, tenant_id, nombre, experiencia_anios, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())`,
+      [
+        userId,
+        input.email,
+        passwordHash,
+        input.password,
+        input.cedula || "1020304050",
+        role,
+        tenantId,
+        input.nombreAbogado,
+        experienciaAnios,
+      ]
     );
 
     // Confirmar la transacción atómica

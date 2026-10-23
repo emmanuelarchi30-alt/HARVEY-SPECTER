@@ -18,6 +18,7 @@ export const registerSchema = z.object({
     .string()
     .min(8, "La contraseña debe tener al menos 8 caracteres")
     .max(100, "La contraseña no puede exceder 100 caracteres"),
+  cedula: z.string().optional().default("1020304050"),
   role: z
     .enum(["socio", "senior", "junior", "admin"])
     .default("socio"),

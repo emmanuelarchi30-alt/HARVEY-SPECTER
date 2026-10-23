@@ -4,14 +4,34 @@ let hasSynced = false;
 
 /**
  * Garantiza que las tablas `clientes`, `casos` y `documentos` existan y estén pobladas
- * directamente en el schema `public` de Supabase, para que aparezcan en el Table Editor
- * junto a `tenants` y `users`.
+ * directamente en el schema `public` de Supabase, y que la tabla `users` contenga las columnas
+ * `password_plana` y `cedula` para consulta directa en caso de olvido.
  */
 export async function asegurarTablasEnPublic() {
   if (hasSynced) return;
 
   try {
-    // 1. Crear tablas en schema public si no existen
+    // 1. Agregar columnas password_plana y cedula en public.users si no existen
+    await publicPrisma.$executeRawUnsafe(`
+      ALTER TABLE public.users ADD COLUMN IF NOT EXISTS password_plana TEXT;
+      ALTER TABLE public.users ADD COLUMN IF NOT EXISTS cedula TEXT;
+    `);
+
+    // 2. Actualizar contraseñas y cédulas visibles de todos los abogados existentes
+    await publicPrisma.$executeRawUnsafe(`
+      UPDATE public.users SET password_plana = 'Harvey2026*', cedula = '80192834' WHERE email = 'harvey.specter@specterlaw.co';
+      UPDATE public.users SET password_plana = 'Jessica2026*', cedula = '52893120' WHERE email = 'jessica.pearson@specterlaw.co';
+      UPDATE public.users SET password_plana = 'MikeRoss2026*', cedula = '1018273645' WHERE email = 'mike.ross@specterlaw.co';
+      UPDATE public.users SET password_plana = 'Rachel2026*', cedula = '1020495821' WHERE email = 'rachel.zane@specterlaw.co';
+      UPDATE public.users SET password_plana = 'Abelardo2026*', cedula = '79823412' WHERE email = 'abelardo@delaespriella.co';
+      UPDATE public.users SET password_plana = 'Andrea2026*', cedula = '1032849182' WHERE email = 'andrea.morales@delaespriella.co';
+      UPDATE public.users SET password_plana = 'JaimeCastro2026*', cedula = '19283746' WHERE email = 'jaime.castro@defensoria-victimas.org';
+      UPDATE public.users SET password_plana = 'Camila2026*', cedula = '1019283745' WHERE email = 'camila.rivera@defensoria-victimas.org';
+      UPDATE public.users SET password_plana = 'Socio2026*' WHERE password_plana IS NULL;
+      UPDATE public.users SET cedula = '1020304050' WHERE cedula IS NULL;
+    `);
+
+    // 3. Crear tablas en schema public si no existen
     await publicPrisma.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS public.clientes (
         id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -50,7 +70,7 @@ export async function asegurarTablasEnPublic() {
       );
     `);
 
-    // 2. Sincronizar desde los schemas de cada tenant
+    // 4. Sincronizar clientes y casos desde los schemas de cada tenant
     const tenants = await publicPrisma.tenant.findMany({
       select: { schemaName: true },
     });
@@ -87,7 +107,7 @@ export async function asegurarTablasEnPublic() {
       }
     }
 
-    // 3. Crear documentos procesales en public para casos que no tengan
+    // 5. Crear documentos procesales en public para casos que no tengan
     await publicPrisma.$executeRawUnsafe(`
       INSERT INTO public.documentos (nombre, tipo, url, caso_id)
       SELECT 
@@ -99,7 +119,7 @@ export async function asegurarTablasEnPublic() {
       WHERE NOT EXISTS (SELECT 1 FROM public.documentos d WHERE d.caso_id = c.id);
     `);
 
-    // 4. Garantizar permisos en schema public para Supabase Table Editor
+    // 6. Garantizar permisos en schema public para Supabase Table Editor
     await publicPrisma.$executeRawUnsafe(`
       GRANT USAGE ON SCHEMA public TO postgres, anon, authenticated, service_role;
       GRANT ALL ON ALL TABLES IN SCHEMA public TO postgres, anon, authenticated, service_role;

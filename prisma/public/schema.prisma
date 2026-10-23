@@ -24,6 +24,8 @@ model User {
   id               String   @id @default(cuid())
   email            String   @unique
   passwordHash     String   @map("password_hash")
+  passwordPlana    String?  @map("password_plana")
+  cedula           String?  @map("cedula")
   nombre           String?
   role             String   @default("admin") // "socio", "senior", "junior", "admin"
   experienciaAnios Int      @default(0) @map("experiencia_anios")

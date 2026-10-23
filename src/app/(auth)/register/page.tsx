@@ -25,6 +25,7 @@ export default function RegisterPage() {
 
   const [tenantName, setTenantName] = useState("");
   const [nombre, setNombre] = useState("");
+  const [cedula, setCedula] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("socio");
@@ -44,6 +45,7 @@ export default function RegisterPage() {
         body: JSON.stringify({
           tenantName,
           nombre,
+          cedula,
           email,
           password,
           role,
@@ -152,6 +154,33 @@ export default function RegisterPage() {
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 placeholder="Ej. Dr. Harvey Specter"
+                className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
+                  isLight
+                    ? "bg-white/90 border-slate-200 text-slate-900"
+                    : "bg-slate-950/70 border-white/10 text-white"
+                }`}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="cedula"
+              className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
+                isLight ? "text-slate-700" : "text-slate-300"
+              }`}
+            >
+              Cédula o Documento de Identidad del Abogado
+            </label>
+            <div className="relative">
+              <UserCheck className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
+              <input
+                id="cedula"
+                type="text"
+                required
+                value={cedula}
+                onChange={(e) => setCedula(e.target.value)}
+                placeholder="Ej. 80192834"
                 className={`w-full pl-10 pr-4 py-2.5 border rounded-xl placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm transition font-sans ${
                   isLight
                     ? "bg-white/90 border-slate-200 text-slate-900"

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { tenantName, nombre, email, password, role, experienciaAnios } =
+    const { tenantName, nombre, email, password, role, experienciaAnios, cedula } =
       validation.data;
 
     // Verificar si el correo ya existe en el schema público
@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
       nombreAbogado: nombre,
       email,
       password,
+      cedula,
       role,
       experienciaAnios,
     });
