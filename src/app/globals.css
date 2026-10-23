@@ -74,11 +74,11 @@ body {
 }
 
 .animate-liquid-morph {
-  animation: liquid-morph 18s ease-in-out infinite;
+  animation: liquid-morph 20s ease-in-out infinite;
 }
 
 .animate-liquid-morph-secondary {
-  animation: liquid-morph-secondary 22s ease-in-out infinite reverse;
+  animation: liquid-morph-secondary 25s ease-in-out infinite reverse;
 }
 
 .animate-float-subtle {
@@ -86,67 +86,73 @@ body {
 }
 
 /* =========================================================================
-   FLUID GLASS - MODO OSCURO (DARK MODE)
+   FLUID GLASS - CRISTAL LÍQUIDO PURO (DEFAULT / MODO CLARO)
    ========================================================================= */
+
 .fluid-glass {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
   box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.37),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+    0 10px 30px -5px rgba(15, 23, 42, 0.05),
+    0 20px 40px -15px rgba(15, 23, 42, 0.07),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 1);
+  color: #0f172a;
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fluid-glass:hover {
-  border-color: rgba(245, 158, 11, 0.35);
+  border-color: rgba(217, 119, 6, 0.45);
   box-shadow: 
-    0 16px 48px 0 rgba(0, 0, 0, 0.5),
+    0 20px 48px -10px rgba(15, 23, 42, 0.1),
     0 0 24px 0 rgba(245, 158, 11, 0.12),
-    inset 0 1px 2px 0 rgba(255, 255, 255, 0.2);
+    inset 0 1px 3px 0 rgba(255, 255, 255, 1);
   transform: translateY(-2px);
 }
 
 .fluid-glass-pill {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  color: #0f172a;
 }
 
 /* =========================================================================
-   FLUID GLASS - MODO CLARO (LIGHT MODE) - CRISTAL LÍQUIDO LUMINOSO
+   FLUID GLASS - MODO OSCURO (DARK MODE OBSIDIAN)
    ========================================================================= */
-.theme-light .fluid-glass {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.85);
+
+.dark .fluid-glass {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 12px 36px 0 rgba(15, 23, 42, 0.06),
-    inset 0 1px 2px 0 rgba(255, 255, 255, 0.95);
-  color: #0f172a;
+    0 12px 40px 0 rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+  color: #f8fafc;
 }
 
-.theme-light .fluid-glass:hover {
-  border-color: rgba(217, 119, 6, 0.5);
+.dark .fluid-glass:hover {
+  border-color: rgba(245, 158, 11, 0.4);
   box-shadow: 
-    0 20px 48px 0 rgba(15, 23, 42, 0.1),
+    0 16px 48px 0 rgba(0, 0, 0, 0.6),
     0 0 24px 0 rgba(245, 158, 11, 0.15),
-    inset 0 1px 3px 0 rgba(255, 255, 255, 1);
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.2);
 }
 
-.theme-light .fluid-glass-pill {
-  background: rgba(255, 255, 255, 0.65);
+.dark .fluid-glass-pill {
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  color: #0f172a;
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
 }
 
 /* Shimmer overlay */
@@ -160,12 +166,21 @@ body {
   background: linear-gradient(
     60deg,
     transparent 40%,
-    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.25) 50%,
     transparent 60%
   );
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.5s ease;
+}
+
+.dark .fluid-glass::after {
+  background: linear-gradient(
+    60deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 60%
+  );
 }
 
 .fluid-glass:hover::after {

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { publicPrisma } from "@/lib/db/publicClient";
 import { apiResponse } from "@/lib/http";
+import { asegurarTablasEnPublic } from "@/lib/db/syncPublicTables";
 
 export async function GET() {
   try {
+    await asegurarTablasEnPublic();
+
     const tenants = await publicPrisma.tenant.findMany({
       select: {
         id: true,

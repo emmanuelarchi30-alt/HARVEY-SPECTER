@@ -15,6 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="h-full antialiased font-sans" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try { if (localStorage.getItem('despacho_theme') === 'dark') { document.documentElement.classList.add('dark'); } } catch (e) {}`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider>
           <LanguageProvider>{children}</LanguageProvider>

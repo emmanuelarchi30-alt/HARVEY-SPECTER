@@ -21,7 +21,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Por defecto modo claro para una experiencia luminosa de cristal líquido
+    // Por defecto modo claro con cristal líquido puro
     const savedTheme = (localStorage.getItem("despacho_theme") as Theme) || "light";
     setThemeState(savedTheme);
     applyThemeClass(savedTheme);
@@ -30,12 +30,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   function applyThemeClass(t: Theme) {
     const root = document.documentElement;
-    if (t === "light") {
-      root.classList.remove("dark");
-      root.classList.add("theme-light");
-    } else {
-      root.classList.remove("theme-light");
+    if (t === "dark") {
       root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
     }
   }
 

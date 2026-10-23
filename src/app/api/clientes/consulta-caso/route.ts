@@ -137,6 +137,57 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Si no se encontró en schemas de tenant, buscar en public.casos como respaldo
+    if (resultados.length === 0) {
+      try {
+        const publicResults = await publicPrisma.$queryRawUnsafe<any[]>(
+          `SELECT c.*, cl.nombre as cliente_nombre, cl.tipo_documento, cl.numero_documento, cl.condicion_especial, cl.tiene_prioridad
+           FROM public.casos c
+           JOIN public.clientes cl ON c.cliente_id = cl.id
+           WHERE LOWER(c.numero_expediente) = LOWER($1) AND cl.numero_documento = $2
+           LIMIT 1`,
+          radicado,
+          numeroDocumento
+        );
+
+        if (publicResults.length > 0) {
+          const c = publicResults[0];
+          resultados.push({
+            despacho: { id: "specter_col", name: "Specter & Asociados Colombia" },
+            caso: {
+              id: c.id,
+              numeroExpediente: c.numero_expediente,
+              titulo: c.titulo,
+              descripcion: c.descripcion,
+              estado: c.estado,
+              prioridad: c.prioridad,
+              esFuerzaMayor: c.es_fuerza_mayor,
+              nivelAbogadoExigido: c.nivel_abogado_exigido,
+              fechaApertura: c.fecha_apertura,
+            },
+            cliente: {
+              id: c.cliente_id,
+              nombre: c.cliente_nombre,
+              tipoDocumento: c.tipo_documento,
+              numeroDocumento: c.numero_documento,
+              condicionEspecial: c.condicion_especial,
+              tienePrioridad: c.tiene_prioridad,
+            },
+            abogadoAsignado: {
+              id: "abg_titular",
+              nombre: "Harvey Specter (Socio Director)",
+              email: "harvey.specter@specterlaw.co",
+              role: "socio",
+              experienciaAnios: 18,
+              categoria: "Abogado Mayor (Socio Titular / Senior)",
+            },
+          });
+        }
+      } catch (errPublic) {
+        // Continuar
+      }
+    }
+
     if (resultados.length === 0) {
       return apiError(
         "No se encontró ningún expediente con los datos suministrados. Verifique el número de radicado o documento.",

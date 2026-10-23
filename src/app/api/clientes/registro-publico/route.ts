@@ -145,6 +145,61 @@ export async function POST(request: NextRequest) {
       return { cliente: clienteCreado, caso: casoCreado };
     });
 
+    // 6. Reflejar en schema public para que aparezca inmediatamente en el Table Editor de Supabase
+    try {
+      await publicPrisma.$executeRawUnsafe(
+        `INSERT INTO public.clientes (id, nombre, tipo_documento, numero_documento, email, telefono, condicion_especial, tiene_prioridad)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         ON CONFLICT (tipo_documento, numero_documento) DO UPDATE
+         SET nombre = EXCLUDED.nombre,
+             email = EXCLUDED.email,
+             telefono = EXCLUDED.telefono,
+             condicion_especial = EXCLUDED.condicion_especial,
+             tiene_prioridad = EXCLUDED.tiene_prioridad`,
+        cliente.id,
+        cliente.nombre,
+        cliente.tipoDocumento,
+        cliente.numeroDocumento,
+        cliente.email,
+        cliente.telefono,
+        cliente.condicionEspecial,
+        cliente.tienePrioridad
+      );
+
+      await publicPrisma.$executeRawUnsafe(
+        `INSERT INTO public.casos (id, numero_expediente, titulo, descripcion, estado, prioridad, es_fuerza_mayor, nivel_abogado_exigido, abogado_asignado_id, cliente_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+         ON CONFLICT (numero_expediente) DO UPDATE
+         SET titulo = EXCLUDED.titulo,
+             descripcion = EXCLUDED.descripcion,
+             estado = EXCLUDED.estado,
+             prioridad = EXCLUDED.prioridad,
+             es_fuerza_mayor = EXCLUDED.es_fuerza_mayor,
+             nivel_abogado_exigido = EXCLUDED.nivel_abogado_exigido,
+             abogado_asignado_id = EXCLUDED.abogado_asignado_id`,
+        caso.id,
+        caso.numeroExpediente,
+        caso.titulo,
+        caso.descripcion,
+        caso.estado,
+        caso.prioridad,
+        caso.esFuerzaMayor,
+        caso.nivelAbogadoExigido,
+        caso.abogadoAsignadoId,
+        cliente.id
+      );
+
+      await publicPrisma.$executeRawUnsafe(
+        `INSERT INTO public.documentos (nombre, tipo, url, caso_id)
+         VALUES ($1, 'demanda_tutela', $2, $3)`,
+        `Demanda de Tutela y Dictamen Constitucional - ${caso.numeroExpediente}.pdf`,
+        `https://storage.supabase.co/expedientes/${caso.numeroExpediente}/demanda.pdf`,
+        caso.id
+      );
+    } catch (mirrorErr) {
+      console.warn("Aviso en espejo public de Supabase:", mirrorErr);
+    }
+
     return apiResponse(
       {
         mensaje: "Solicitud y expediente radicados exitosamente con asignación jurídica automatizada",
