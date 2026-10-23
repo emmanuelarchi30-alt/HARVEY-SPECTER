@@ -36,7 +36,7 @@ export function HeaderControls() {
         style={{
           background: isLight ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.05)",
           borderColor: isLight ? "rgba(226, 232, 240, 0.8)" : "rgba(255, 255, 255, 0.1)",
-          color: isLight ? "#b45309" : "#fbbf24",
+          color: isLight ? "#b45309" : "#246ffb",
         }}
       >
         {isLight ? (

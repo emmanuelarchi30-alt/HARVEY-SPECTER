@@ -68,14 +68,14 @@ export default function LoginPage() {
         {/* Banner para Clientes / Accionantes */}
         <div
           className={`fluid-glass rounded-2xl p-5 border text-center space-y-2.5 shadow-xl ${
-            isLight ? "border-amber-400 bg-amber-50/60" : "border-amber-500/40"
+            isLight ? "border-amber-300 bg-amber-50/80 text-slate-900" : "border-amber-500/40"
           }`}
         >
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider">
-            <Search className="w-3.5 h-3.5 text-amber-500" />
+          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">
+            <Search className="w-3.5 h-3.5 text-amber-600 dark:text-amber-500" />
             <span>¿Eres Cliente o Accionante?</span>
           </div>
-          <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+          <p className={`text-xs ${isLight ? "text-slate-800 font-medium" : "text-slate-300"}`}>
             Si radicaste una solicitud o tutela, no requieres contraseña de abogado. Consulta tu expediente directamente con tu radicado oficial y cédula.
           </p>
           <div className="flex justify-center pt-1">
@@ -85,7 +85,7 @@ export default function LoginPage() {
               radius={14}
               tint={isLight ? "#f59e0b" : "#ffffff"}
               tintOpacity={isLight ? 0.16 : 0.08}
-              textColor={isLight ? "#92400e" : "#fef3c7"}
+              textColor={isLight ? "#78350f" : "#fef3c7"}
               lineColor={isLight ? "#d97706" : "#f59e0b"}
               baseColor={isLight ? "#fef3c7" : "#525252"}
               intensity={1.1}
@@ -93,7 +93,7 @@ export default function LoginPage() {
               followMouse
               className="w-full"
             >
-              <Search className="w-4 h-4 text-amber-500" />
+              <Search className="w-4 h-4 text-amber-600 dark:text-amber-500" />
               <span>Consultar Estado de mi Caso / Petición</span>
             </SpecularButton>
           </div>
@@ -102,17 +102,17 @@ export default function LoginPage() {
         {/* Formulario de Acceso para Abogados */}
         <div className="fluid-glass rounded-[28px] p-8 sm:p-10 shadow-2xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 mb-2 shadow-lg shadow-amber-950/20">
-              <Scale className="w-6 h-6 text-amber-500" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-600 dark:text-amber-500 mb-2 shadow-lg shadow-amber-950/20">
+              <Scale className="w-6 h-6 text-amber-600 dark:text-amber-500" />
             </div>
             <h1
               className={`text-2xl font-serif font-bold tracking-tight ${
-                isLight ? "text-slate-900" : "text-white"
+                isLight ? "text-slate-950" : "text-white"
               }`}
             >
               Acceso a la Firma Jurídica
             </h1>
-            <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+            <p className={`text-xs ${isLight ? "text-slate-700 font-medium" : "text-slate-400"}`}>
               Portal exclusivo para Abogados Litigantes y Socios
             </p>
           </div>
@@ -128,8 +128,8 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
+                className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${
+                  isLight ? "text-slate-900" : "text-slate-300"
                 }`}
               >
                 Correo Institucional o Cédula
@@ -153,8 +153,8 @@ export default function LoginPage() {
               <div className="flex items-center justify-between mb-1.5">
                 <label
                   htmlFor="password"
-                  className={`block text-xs font-semibold uppercase tracking-wider ${
-                    isLight ? "text-slate-700" : "text-slate-300"
+                  className={`block text-xs font-bold uppercase tracking-wider ${
+                    isLight ? "text-slate-900" : "text-slate-300"
                   }`}
                 >
                   Contraseña de Acceso
@@ -162,7 +162,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-[11px] text-amber-500 hover:text-amber-400 flex items-center space-x-1"
+                  className={`text-[11px] font-semibold flex items-center space-x-1 ${isLight ? "text-amber-700 hover:text-amber-800" : "text-amber-400 hover:text-amber-300"}`}
                 >
                   {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
@@ -198,7 +198,7 @@ export default function LoginPage() {
                 radius={16}
                 tint={isLight ? "#f59e0b" : "#ffffff"}
                 tintOpacity={isLight ? 0.2 : 0.08}
-                textColor={isLight ? "#92400e" : "#fef3c7"}
+                textColor={isLight ? "#78350f" : "#fef3c7"}
                 lineColor={isLight ? "#d97706" : "#f59e0b"}
                 baseColor={isLight ? "#fef3c7" : "#525252"}
                 intensity={1.25}
@@ -219,7 +219,7 @@ export default function LoginPage() {
 
           {/* Cuentas de Acceso Rápido / Demo Partners */}
           <div className="pt-2 border-t border-white/[0.08] space-y-2.5">
-            <div className="flex items-center space-x-1.5 text-[11px] font-semibold uppercase tracking-wider text-amber-500/90">
+            <div className={`flex items-center space-x-1.5 text-[11px] font-bold uppercase tracking-wider ${isLight ? "text-amber-800" : "text-amber-400"}`}>
               <Sparkles className="w-3.5 h-3.5" />
               <span>Cuentas de Acceso Rápido (1-Clic)</span>
             </div>
@@ -231,15 +231,15 @@ export default function LoginPage() {
                   setPassword("Harvey2026*");
                   setError(null);
                 }}
-                className={`p-2 rounded-xl border text-left transition ${
+                className={`p-2.5 rounded-xl border text-left transition ${
                   isLight
-                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    ? "bg-white hover:bg-amber-50/90 border-slate-300 hover:border-amber-500 shadow-sm"
                     : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
                 }`}
               >
-                <div className="text-xs font-bold text-amber-500">Harvey Specter</div>
-                <div className="text-[10px] text-slate-400 truncate">harvey@specterlaw.co</div>
-                <div className="text-[10px] font-mono text-emerald-500">Harvey2026*</div>
+                <div className={`text-xs font-bold ${isLight ? "text-amber-800" : "text-amber-400"}`}>Harvey Specter</div>
+                <div className={`text-[10px] font-medium truncate ${isLight ? "text-slate-700" : "text-slate-400"}`}>harvey@specterlaw.co</div>
+                <div className={`text-[10px] font-mono font-semibold ${isLight ? "text-emerald-700" : "text-emerald-400"}`}>Harvey2026*</div>
               </button>
 
               <button
@@ -249,15 +249,15 @@ export default function LoginPage() {
                   setPassword("Jessica2026*");
                   setError(null);
                 }}
-                className={`p-2 rounded-xl border text-left transition ${
+                className={`p-2.5 rounded-xl border text-left transition ${
                   isLight
-                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    ? "bg-white hover:bg-amber-50/90 border-slate-300 hover:border-amber-500 shadow-sm"
                     : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
                 }`}
               >
-                <div className="text-xs font-bold text-amber-500">Jessica Pearson</div>
-                <div className="text-[10px] text-slate-400 truncate">C.C. 52893120</div>
-                <div className="text-[10px] font-mono text-emerald-500">Jessica2026*</div>
+                <div className={`text-xs font-bold ${isLight ? "text-amber-800" : "text-amber-400"}`}>Jessica Pearson</div>
+                <div className={`text-[10px] font-medium truncate ${isLight ? "text-slate-700" : "text-slate-400"}`}>C.C. 52893120</div>
+                <div className={`text-[10px] font-mono font-semibold ${isLight ? "text-emerald-700" : "text-emerald-400"}`}>Jessica2026*</div>
               </button>
 
               <button
@@ -267,15 +267,15 @@ export default function LoginPage() {
                   setPassword("MikeRoss2026*");
                   setError(null);
                 }}
-                className={`p-2 rounded-xl border text-left transition ${
+                className={`p-2.5 rounded-xl border text-left transition ${
                   isLight
-                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    ? "bg-white hover:bg-amber-50/90 border-slate-300 hover:border-amber-500 shadow-sm"
                     : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
                 }`}
               >
-                <div className="text-xs font-bold text-amber-500">Mike Ross</div>
-                <div className="text-[10px] text-slate-400 truncate">mike@specterlaw.co</div>
-                <div className="text-[10px] font-mono text-emerald-500">MikeRoss2026*</div>
+                <div className={`text-xs font-bold ${isLight ? "text-amber-800" : "text-amber-400"}`}>Mike Ross</div>
+                <div className={`text-[10px] font-medium truncate ${isLight ? "text-slate-700" : "text-slate-400"}`}>mike@specterlaw.co</div>
+                <div className={`text-[10px] font-mono font-semibold ${isLight ? "text-emerald-700" : "text-emerald-400"}`}>MikeRoss2026*</div>
               </button>
 
               <button
@@ -285,25 +285,25 @@ export default function LoginPage() {
                   setPassword("Rachel2026*");
                   setError(null);
                 }}
-                className={`p-2 rounded-xl border text-left transition ${
+                className={`p-2.5 rounded-xl border text-left transition ${
                   isLight
-                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    ? "bg-white hover:bg-amber-50/90 border-slate-300 hover:border-amber-500 shadow-sm"
                     : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
                 }`}
               >
-                <div className="text-xs font-bold text-amber-500">Rachel Zane</div>
-                <div className="text-[10px] text-slate-400 truncate">rachel@specterlaw.co</div>
-                <div className="text-[10px] font-mono text-emerald-500">Rachel2026*</div>
+                <div className={`text-xs font-bold ${isLight ? "text-amber-800" : "text-amber-400"}`}>Rachel Zane</div>
+                <div className={`text-[10px] font-medium truncate ${isLight ? "text-slate-700" : "text-slate-400"}`}>rachel@specterlaw.co</div>
+                <div className={`text-[10px] font-mono font-semibold ${isLight ? "text-emerald-700" : "text-emerald-400"}`}>Rachel2026*</div>
               </button>
             </div>
           </div>
 
           <div className="pt-4 border-t border-white/[0.08] text-center space-y-2">
-            <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+            <p className={`text-xs ${isLight ? "text-slate-800 font-medium" : "text-slate-400"}`}>
               ¿Deseas constituir una nueva firma legal?{" "}
               <Link
                 href="/register"
-                className="text-amber-500 hover:text-amber-600 font-semibold transition"
+                className={`${isLight ? "text-amber-800 hover:text-amber-900" : "text-amber-400 hover:text-amber-300"} font-bold transition`}
               >
                 Registrar Despacho
               </Link>
@@ -312,7 +312,7 @@ export default function LoginPage() {
               <Link
                 href="/"
                 className={`inline-flex items-center space-x-1 text-xs transition ${
-                  isLight ? "text-slate-500 hover:text-slate-800" : "text-slate-500 hover:text-slate-300"
+                  isLight ? "text-slate-700 hover:text-slate-950 font-medium" : "text-slate-400 hover:text-slate-200"
                 }`}
               >
                 <ArrowLeft className="w-3 h-3" />

@@ -118,11 +118,11 @@ export default function ConsultarCasoPage() {
             <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
             <span>Seguimiento Judicial en Línea</span>
           </div>
-          <h1 className={`text-3xl sm:text-4xl font-serif font-bold tracking-tight ${isLight ? "text-slate-900" : "text-white"}`}>
+          <h1 className={`text-3xl sm:text-4xl font-serif font-bold tracking-tight ${isLight ? "text-slate-950" : "text-white"}`}>
             Consulte el Estado de su Proceso o Petición
           </h1>
-          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
-            Ingrese obligatoriamente <strong>AMBOS datos</strong>: su número de radicado oficial asignado (ej. <code className="text-amber-500 font-bold">RAD-2026-7658</code>) y su cédula o documento de identidad para verificar el abogado asignado y las actuaciones procesales.
+          <p className={`text-sm ${isLight ? "text-slate-800 font-medium" : "text-slate-400"}`}>
+            Ingrese obligatoriamente <strong>AMBOS datos</strong>: su número de radicado oficial asignado (ej. <code className={`${isLight ? "text-amber-800 bg-amber-100/80 px-1 py-0.5 rounded" : "text-amber-400"} font-bold`}>RAD-2026-7658</code>) y su cédula o documento de identidad para verificar el abogado asignado y las actuaciones procesales.
           </p>
         </div>
 
@@ -131,7 +131,7 @@ export default function ConsultarCasoPage() {
           <form onSubmit={handleBuscar} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
+                <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${isLight ? "text-slate-900" : "text-slate-300"}`}>
                   Número de Radicado (Obligatorio)
                 </label>
                 <div className="relative">
@@ -148,7 +148,7 @@ export default function ConsultarCasoPage() {
               </div>
 
               <div>
-                <label className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
+                <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${isLight ? "text-slate-900" : "text-slate-300"}`}>
                   Número de Documento / Cédula (Obligatorio)
                 </label>
                 <div className="relative">
@@ -166,9 +166,9 @@ export default function ConsultarCasoPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-              <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+              <p className={`text-xs ${isLight ? "text-slate-800 font-medium" : "text-slate-400"}`}>
                 ¿No ha radicado aún?{" "}
-                <Link href="/registro-cliente" className="text-amber-500 font-semibold hover:underline">
+                <Link href="/registro-cliente" className={`${isLight ? "text-amber-800 hover:text-amber-900" : "text-amber-400 hover:text-amber-300"} font-bold hover:underline`}>
                   Radicar Caso con Triaje IA aquí
                 </Link>
               </p>

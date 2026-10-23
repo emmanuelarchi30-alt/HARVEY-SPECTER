@@ -16,6 +16,7 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { BackgroundVideo } from "@/components/ui/BackgroundVideo";
+import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { FluidGlassLens } from "@/components/ui/FluidGlassLens";
 import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
@@ -170,6 +171,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
+      <FluidGlassBackground />
       <BackgroundVideo src="/videos/fondo-inicio.mp4" />
 
       {/* Navbar público con PillNav de React Bits */}
@@ -181,7 +183,7 @@ export default function HomePage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[680px] pointer-events-none -z-10 overflow-hidden opacity-60">
           <Lightfall
             colors={isLight ? ['#d97706', '#f59e0b', '#38bdf8', '#cbd5e1'] : ['#f59e0b', '#fbbf24', '#38bdf8', '#ffffff']}
-            backgroundColor={isLight ? "#f1f5f9" : "#080c16"}
+            backgroundColor={isLight ? "#f8fafc" : "#080c16"}
             speed={0.25}
             streakCount={3}
             streakWidth={0.8}
@@ -198,20 +200,20 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full fluid-glass-pill text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider animate-float-subtle">
+        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full fluid-glass-pill text-amber-700 dark:text-amber-400 text-xs font-bold uppercase tracking-wider animate-float-subtle">
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           <span>{t.hero_tag}</span>
         </div>
 
         <div className="space-y-6 max-w-3xl mx-auto">
-          <h1 className={`text-4xl sm:text-6xl font-serif font-bold tracking-tight leading-tight ${isLight ? "text-slate-900" : "text-white"}`}>
+          <h1 className={`text-4xl sm:text-6xl font-serif font-bold tracking-tight leading-tight ${isLight ? "text-slate-950" : "text-white"}`}>
             {t.hero_title_1}{" "}
-            <span className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 dark:from-amber-500 dark:via-amber-400 dark:to-amber-600 bg-clip-text text-transparent">
               {t.hero_title_highlight}
             </span>
           </h1>
 
-          <p className={`text-base sm:text-lg leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+          <p className={`text-base sm:text-lg leading-relaxed ${isLight ? "text-slate-800 font-normal" : "text-slate-300"}`}>
             {t.hero_desc}
           </p>
         </div>
@@ -293,39 +295,39 @@ export default function HomePage() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
               <div className="space-y-3">
-                <h3 className={`text-2xl font-serif font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+                <h3 className={`text-2xl font-serif font-bold ${isLight ? "text-slate-950" : "text-white"}`}>
                   Garantía Procesal con Asignación por Jerarquía
                 </h3>
-                <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+                <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-800 font-normal" : "text-slate-300"}`}>
                   El cristal líquido refracta la información en tiempo real. Cuando un ciudadano es acreditado como víctima del conflicto armado o sujeto en debilidad manifiesta (Art. 13 C.P.), la plataforma activa una alerta constitucional prioritaria y delega el caso de forma obligatoria a un <strong>Abogado Mayor (Socio Titular)</strong>.
                 </p>
                 <div className="flex items-center space-x-3 pt-1">
-                  <span className="inline-flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+                  <span className="inline-flex items-center space-x-1.5 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Ley 1448 de 2011 Integrada</span>
                   </span>
-                  <span className="inline-flex items-center space-x-1.5 text-xs text-amber-600 dark:text-amber-400 font-semibold">
+                  <span className="inline-flex items-center space-x-1.5 text-xs text-amber-700 dark:text-amber-400 font-semibold">
                     <Zap className="w-4 h-4" />
                     <span>Fast Track en 12h</span>
                   </span>
                 </div>
               </div>
 
-              <div className={`p-5 rounded-2xl border space-y-2.5 ${isLight ? "bg-amber-50/70 border-amber-200" : "bg-slate-950/70 border-amber-500/30"}`}>
+              <div className={`p-5 rounded-2xl border space-y-2.5 ${isLight ? "bg-amber-100/70 border-amber-300" : "bg-slate-950/70 border-amber-500/30"}`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
                     Regla de Celeridad Procesal
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300 font-bold">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold">
                     Fast Track
                   </span>
                 </div>
-                <p className={`text-xs leading-relaxed ${isLight ? "text-slate-700" : "text-slate-300"}`}>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-slate-900 font-medium" : "text-slate-300"}`}>
                   <strong>Un pago grande representa un tiempo de estudio más corto:</strong> Nuestra modalidad Fast Track garantiza respuesta en menos de 12 horas con solicitud de medida cautelar previa ante juez constitucional.
                 </p>
                 <Link
                   href="/aranceles"
-                  className="inline-flex items-center space-x-1 text-xs text-amber-600 dark:text-amber-400 font-bold hover:underline pt-1"
+                  className="inline-flex items-center space-x-1 text-xs text-amber-700 dark:text-amber-400 font-bold hover:underline pt-1"
                 >
                   <span>Ver tabla comparativa de aranceles</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -338,37 +340,37 @@ export default function HomePage() {
         {/* Tarjetas de Pilares Jurídicos */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full pt-4">
           <div className="fluid-glass rounded-3xl p-6 sm:p-8 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-500 flex items-center justify-center shadow-lg">
-              <Sparkles className="w-6 h-6 text-amber-500" />
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-500 flex items-center justify-center shadow-lg">
+              <Sparkles className="w-6 h-6 text-amber-600 dark:text-amber-500" />
             </div>
-            <h2 className={`font-serif font-bold text-lg ${isLight ? "text-slate-900" : "text-white"}`}>
+            <h2 className={`font-serif font-bold text-lg ${isLight ? "text-slate-950" : "text-white"}`}>
               Triaje IA & Ley de Víctimas
             </h2>
-            <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+            <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-800 font-normal" : "text-slate-300"}`}>
               Clasificación instantánea bajo el Artículo 13 de la Constitución. Víctimas del conflicto armado reciben prelación máxima y asignación inmediata a un <strong>Abogado Mayor</strong>.
             </p>
           </div>
 
           <div className="fluid-glass rounded-3xl p-6 sm:p-8 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-500 flex items-center justify-center shadow-lg">
-              <ShieldCheck className="w-6 h-6 text-emerald-500" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-500 flex items-center justify-center shadow-lg">
+              <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-500" />
             </div>
-            <h2 className={`font-serif font-bold text-lg ${isLight ? "text-slate-900" : "text-white"}`}>
+            <h2 className={`font-serif font-bold text-lg ${isLight ? "text-slate-950" : "text-white"}`}>
               Bóveda con Reserva Profesional
             </h2>
-            <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+            <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-800 font-normal" : "text-slate-300"}`}>
               Aislamiento estricto de expedientes. Cada firma opera en su propio compartimento de datos protegido, garantizando el secreto profesional y la confidencialidad de las pruebas.
             </p>
           </div>
 
           <div className="fluid-glass rounded-3xl p-6 sm:p-8 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-500 flex items-center justify-center shadow-lg">
-              <BookOpen className="w-6 h-6 text-blue-500" />
+            <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-500 flex items-center justify-center shadow-lg">
+              <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-500" />
             </div>
-            <h2 className={`font-serif font-bold text-lg ${isLight ? "text-slate-900" : "text-white"}`}>
+            <h2 className={`font-serif font-bold text-lg ${isLight ? "text-slate-950" : "text-white"}`}>
               Constitución de 1991 Integrada
             </h2>
-            <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+            <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-800 font-normal" : "text-slate-300"}`}>
               Consulta en tiempo real del bloque de constitucionalidad (Arts. 11, 13, 29, 86, 93) para la fundamentación jurídica de acciones de tutela y derechos de petición.
             </p>
           </div>
@@ -378,14 +380,14 @@ export default function HomePage() {
         <section className="w-full space-y-6 pt-10 text-left">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 text-[11px] font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-500 text-[11px] font-bold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>React Bits • Interactive Chroma Grid</span>
               </div>
-              <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+              <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${isLight ? "text-slate-950" : "text-white"}`}>
                 Áreas de Práctica & Especialidades Procesales
               </h2>
-              <p className={`text-xs sm:text-sm mt-1 max-w-2xl ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+              <p className={`text-xs sm:text-sm mt-1 max-w-2xl ${isLight ? "text-slate-800 font-normal" : "text-slate-400"}`}>
                 Pasa el cursor sobre la cuadrícula cromática para revelar con luz focalizada (spotlight) cada área procesal y consultar la fundamentación legal correspondiente.
               </p>
             </div>
@@ -408,21 +410,21 @@ export default function HomePage() {
         <section className="w-full space-y-8 pt-12 pb-6 text-left">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 text-[11px] font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-500 text-[11px] font-bold uppercase tracking-wider mb-2">
                 <Users className="w-3.5 h-3.5" />
                 <span>React Bits • 3D Holographic Profile Cards</span>
               </div>
-              <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+              <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${isLight ? "text-slate-950" : "text-white"}`}>
                 Cuerpo de Abogados & Socios Titulares
               </h2>
-              <p className={`text-xs sm:text-sm mt-1 max-w-2xl ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+              <p className={`text-xs sm:text-sm mt-1 max-w-2xl ${isLight ? "text-slate-800 font-normal" : "text-slate-400"}`}>
                 Conoce a nuestros litigantes de alto impacto. Pasa el cursor sobre cada credencial para interactuar con la refracción holográfica tridimensional, inclinación física y contactar directamente a cada especialista.
               </p>
             </div>
 
             <Link
               href="/registro-cliente"
-              className="inline-flex items-center space-x-1.5 text-xs text-amber-500 font-bold hover:underline"
+              className={`inline-flex items-center space-x-1.5 text-xs font-bold hover:underline ${isLight ? "text-amber-700 hover:text-amber-800" : "text-amber-500 hover:text-amber-400"}`}
             >
               <span>Solicitar asignación de abogado</span>
               <ArrowRight className="w-3.5 h-3.5" />
