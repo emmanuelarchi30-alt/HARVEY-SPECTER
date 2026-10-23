@@ -15,11 +15,12 @@ import {
   CreditCard,
   CheckCircle2
 } from "lucide-react";
-import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
+import { BackgroundVideo } from "@/components/ui/BackgroundVideo";
 import { FluidGlassLens } from "@/components/ui/FluidGlassLens";
 import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import ChromaGrid, { type ChromaItem } from "@/components/ui/ChromaGrid";
+import ProfileCard from "@/components/ui/ProfileCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -27,6 +28,99 @@ export default function HomePage() {
   const { t } = useLanguage();
   const { theme } = useTheme();
   const isLight = theme === "light";
+
+  const abogadosEquipo = [
+    {
+      name: "Harvey Specter",
+      title: "Socio Director • Litigio de Alto Impacto",
+      handle: "harveyspecter",
+      status: "En Audiencia Tribunal",
+      statusColor: "#22c55e",
+      contactText: "Solicitar Caso",
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/d/da/S8_Harvey_Specter.jpg/revision/latest?cb=20180731195449",
+      miniAvatarUrl: "https://static.wikia.nocookie.net/suits/images/d/da/S8_Harvey_Specter.jpg/revision/latest?cb=20180731195449",
+      backdropColor: "#1e1b4b",
+      holo: 0.85,
+      glare: 0.6,
+      tiltStrength: 14,
+      parallax: 8
+    },
+    {
+      name: "Jessica Pearson",
+      title: "Socia Fundadora • Casación & Consejo de Estado",
+      handle: "jessicapearson",
+      status: "Gabinete Directivo",
+      statusColor: "#f59e0b",
+      contactText: "Agendar Consulta",
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c4/Jessica_Pearson_%28Pearson%29.jpg/revision/latest?cb=20190902222249",
+      miniAvatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c4/Jessica_Pearson_%28Pearson%29.jpg/revision/latest?cb=20190902222249",
+      backdropColor: "#3b0764",
+      holo: 0.8,
+      glare: 0.55,
+      tiltStrength: 12,
+      parallax: 8
+    },
+    {
+      name: "Mike Ross",
+      title: "Abogado Senior • Memoria Eidética & Tutelas",
+      handle: "mikeross",
+      status: "Fast Track Activo (<12h)",
+      statusColor: "#38bdf8",
+      contactText: "Radicar con IA",
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c2/Mike_Ross_%285x7%29.png/revision/latest?cb=20190903001426",
+      miniAvatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c2/Mike_Ross_%285x7%29.png/revision/latest?cb=20190903001426",
+      backdropColor: "#0f172a",
+      holo: 0.9,
+      glare: 0.65,
+      tiltStrength: 15,
+      parallax: 10
+    },
+    {
+      name: "Louis Litt",
+      title: "Socio Titular • Derecho Financiero & Arbitraje",
+      handle: "louislitt",
+      status: "Revisión Procesal",
+      statusColor: "#eab308",
+      contactText: "Consultar Dictamen",
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/f/f1/S8_Louis_Litt.jpg/revision/latest?cb=20180731195639",
+      miniAvatarUrl: "https://static.wikia.nocookie.net/suits/images/f/f1/S8_Louis_Litt.jpg/revision/latest?cb=20180731195639",
+      backdropColor: "#1c1917",
+      holo: 0.75,
+      glare: 0.5,
+      tiltStrength: 12,
+      parallax: 7
+    },
+    {
+      name: "Donna Paulsen",
+      title: "Directora de Operaciones • COO de la Firma",
+      handle: "donnapaulsen",
+      status: "Atención Inmediata",
+      statusColor: "#ec4899",
+      contactText: "Contactar",
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/9/97/S8_Donna_Paulsen.jpg/revision/latest?cb=20180731195347",
+      miniAvatarUrl: "https://static.wikia.nocookie.net/suits/images/9/97/S8_Donna_Paulsen.jpg/revision/latest?cb=20180731195347",
+      backdropColor: "#2e1065",
+      holo: 0.85,
+      glare: 0.6,
+      tiltStrength: 14,
+      parallax: 8
+    },
+    {
+      name: "Rachel Zane",
+      title: "Abogada Especialista • Víctimas Ley 1448",
+      handle: "rachelzane",
+      status: "Defensoría Activa",
+      statusColor: "#10b981",
+      contactText: "Amparo Gratuito",
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/9/92/Meghan_Markle_as_Rachel_Zane.png/revision/latest?cb=20191003130401",
+      miniAvatarUrl: "https://static.wikia.nocookie.net/suits/images/9/92/Meghan_Markle_as_Rachel_Zane.png/revision/latest?cb=20191003130401",
+      backdropColor: "#14532d",
+      holo: 0.8,
+      glare: 0.55,
+      tiltStrength: 13,
+      parallax: 8
+    }
+  ];
 
   const legalChromaItems: ChromaItem[] = [
     {
@@ -75,7 +169,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
-      <FluidGlassBackground />
+      <BackgroundVideo src="/videos/fondo-inicio.mp4" />
 
       {/* Navbar público con PillNav de React Bits */}
       <PublicNavbar />
@@ -286,6 +380,57 @@ export default function HomePage() {
             frame={true}
             theme={isLight ? "light" : "dark"}
           />
+        </section>
+
+        {/* Sección ProfileCard de React Bits: Cuerpo de Abogados & Socios Titulares */}
+        <section className="w-full space-y-8 pt-12 pb-6 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 text-[11px] font-bold uppercase tracking-wider mb-2">
+                <Users className="w-3.5 h-3.5" />
+                <span>React Bits • 3D Holographic Profile Cards</span>
+              </div>
+              <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+                Cuerpo de Abogados & Socios Titulares
+              </h2>
+              <p className={`text-xs sm:text-sm mt-1 max-w-2xl ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                Conoce a nuestros litigantes de alto impacto. Pasa el cursor sobre cada credencial para interactuar con la refracción holográfica tridimensional, inclinación física y contactar directamente a cada especialista.
+              </p>
+            </div>
+
+            <Link
+              href="/registro-cliente"
+              className="inline-flex items-center space-x-1.5 text-xs text-amber-500 font-bold hover:underline"
+            >
+              <span>Solicitar asignación de abogado</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {abogadosEquipo.map((abogado, idx) => (
+              <ProfileCard
+                key={idx}
+                name={abogado.name}
+                title={abogado.title}
+                handle={abogado.handle}
+                status={abogado.status}
+                statusColor={abogado.statusColor}
+                contactText={abogado.contactText}
+                avatarUrl={abogado.avatarUrl}
+                miniAvatarUrl={abogado.miniAvatarUrl}
+                backdropColor={abogado.backdropColor}
+                holo={abogado.holo}
+                glare={abogado.glare}
+                tiltStrength={abogado.tiltStrength}
+                parallax={abogado.parallax}
+                theme={isLight ? "light" : "dark"}
+                onContactClick={() => {
+                  window.location.href = `/registro-cliente?abogado=${encodeURIComponent(abogado.name)}`;
+                }}
+              />
+            ))}
+          </div>
         </section>
       </main>
 

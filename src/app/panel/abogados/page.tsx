@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   BookOpen
 } from "lucide-react";
+import ProfileCard from "@/components/ui/ProfileCard";
 
 export const instant = false;
 
@@ -73,6 +74,153 @@ export default async function AbogadosPage() {
       console.error("Error al cargar abogados del despacho:", e);
     }
   }
+
+  const FOTOS_MAP: Record<string, { avatarUrl: string; handle: string; backdropColor: string }> = {
+    harvey: {
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/d/da/S8_Harvey_Specter.jpg/revision/latest?cb=20180731195449",
+      handle: "harveyspecter",
+      backdropColor: "#1e1b4b"
+    },
+    jessica: {
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c4/Jessica_Pearson_%28Pearson%29.jpg/revision/latest?cb=20190902222249",
+      handle: "jessicapearson",
+      backdropColor: "#3b0764"
+    },
+    mike: {
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c2/Mike_Ross_%285x7%29.png/revision/latest?cb=20190903001426",
+      handle: "mikeross",
+      backdropColor: "#0f172a"
+    },
+    louis: {
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/f/f1/S8_Louis_Litt.jpg/revision/latest?cb=20180731195639",
+      handle: "louislitt",
+      backdropColor: "#1c1917"
+    },
+    donna: {
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/9/97/S8_Donna_Paulsen.jpg/revision/latest?cb=20180731195347",
+      handle: "donnapaulsen",
+      backdropColor: "#2e1065"
+    },
+    rachel: {
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/9/92/Meghan_Markle_as_Rachel_Zane.png/revision/latest?cb=20191003130401",
+      handle: "rachelzane",
+      backdropColor: "#14532d"
+    }
+  };
+
+  const EQUIPO_SPECTER_DEFAULT = [
+    {
+      id: "harvey-specter-01",
+      nombre: "Harvey Specter",
+      email: "harvey.specter@specterlaw.co",
+      role: "socio",
+      experienciaAnios: 15,
+      casosAsignadosCount: 12,
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/d/da/S8_Harvey_Specter.jpg/revision/latest?cb=20180731195449",
+      handle: "harveyspecter",
+      status: "En Audiencia Tribunal",
+      statusColor: "#22c55e",
+      backdropColor: "#1e1b4b"
+    },
+    {
+      id: "jessica-pearson-02",
+      nombre: "Jessica Pearson",
+      email: "jessica.pearson@specterlaw.co",
+      role: "socio",
+      experienciaAnios: 20,
+      casosAsignadosCount: 8,
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c4/Jessica_Pearson_%28Pearson%29.jpg/revision/latest?cb=20190902222249",
+      handle: "jessicapearson",
+      status: "Gabinete Directivo",
+      statusColor: "#f59e0b",
+      backdropColor: "#3b0764"
+    },
+    {
+      id: "mike-ross-03",
+      nombre: "Mike Ross",
+      email: "mike.ross@specterlaw.co",
+      role: "senior",
+      experienciaAnios: 8,
+      casosAsignadosCount: 19,
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/c/c2/Mike_Ross_%285x7%29.png/revision/latest?cb=20190903001426",
+      handle: "mikeross",
+      status: "Fast Track (<12h)",
+      statusColor: "#38bdf8",
+      backdropColor: "#0f172a"
+    },
+    {
+      id: "louis-litt-04",
+      nombre: "Louis Litt",
+      email: "louis.litt@specterlaw.co",
+      role: "socio",
+      experienciaAnios: 14,
+      casosAsignadosCount: 15,
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/f/f1/S8_Louis_Litt.jpg/revision/latest?cb=20180731195639",
+      handle: "louislitt",
+      status: "Revisión Financiera",
+      statusColor: "#eab308",
+      backdropColor: "#1c1917"
+    },
+    {
+      id: "donna-paulsen-05",
+      nombre: "Donna Paulsen",
+      email: "donna.paulsen@specterlaw.co",
+      role: "socio",
+      experienciaAnios: 12,
+      casosAsignadosCount: 22,
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/9/97/S8_Donna_Paulsen.jpg/revision/latest?cb=20180731195347",
+      handle: "donnapaulsen",
+      status: "Operaciones & Triage",
+      statusColor: "#ec4899",
+      backdropColor: "#2e1065"
+    },
+    {
+      id: "rachel-zane-06",
+      nombre: "Rachel Zane",
+      email: "rachel.zane@specterlaw.co",
+      role: "asociado",
+      experienciaAnios: 6,
+      casosAsignadosCount: 11,
+      avatarUrl: "https://static.wikia.nocookie.net/suits/images/9/92/Meghan_Markle_as_Rachel_Zane.png/revision/latest?cb=20191003130401",
+      handle: "rachelzane",
+      status: "Víctimas Ley 1448",
+      statusColor: "#10b981",
+      backdropColor: "#14532d"
+    }
+  ];
+
+  const listaFinal = abogados.length > 0
+    ? abogados.map((a) => {
+        const k = (a.nombre || "").toLowerCase();
+        const matched = Object.entries(FOTOS_MAP).find(([key]) => k.includes(key))?.[1] || {
+          avatarUrl: "https://static.wikia.nocookie.net/suits/images/d/da/S8_Harvey_Specter.jpg/revision/latest?cb=20180731195449",
+          handle: (a.nombre || "abogado").toLowerCase().replace(/[^a-z0-9]/g, ""),
+          backdropColor: "#1e1b4b"
+        };
+        const esMayor = a.role === "socio" || a.role === "senior" || a.experienciaAnios >= 8;
+        return {
+          id: a.id,
+          nombre: a.nombre || a.email,
+          title: esMayor ? "Abogado Mayor • Socio Titular" : "Abogado Menor • Asociado",
+          handle: matched.handle,
+          status: `${a.casosAsignadosCount} caso(s) en curso`,
+          statusColor: esMayor ? "#f59e0b" : "#38bdf8",
+          avatarUrl: matched.avatarUrl,
+          backdropColor: matched.backdropColor,
+          holo: esMayor ? 0.9 : 0.75
+        };
+      })
+    : EQUIPO_SPECTER_DEFAULT.map((a) => ({
+        id: a.id,
+        nombre: a.nombre,
+        title: a.role === "socio" ? "Abogado Mayor • Socio Titular" : "Abogado Senior • Litigio Especial",
+        handle: a.handle,
+        status: a.status,
+        statusColor: a.statusColor,
+        avatarUrl: a.avatarUrl,
+        backdropColor: a.backdropColor,
+        holo: 0.85
+      }));
 
   return (
     <div className="space-y-8">
@@ -143,86 +291,38 @@ export default async function AbogadosPage() {
         </div>
       </div>
 
-      {/* Tarjetas de Abogados */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {abogados.map((abg) => {
-          const esMayor = abg.role === "socio" || abg.role === "senior" || abg.experienciaAnios >= 8;
+      {/* Credenciales 3D Holográficas con ProfileCard de React Bits */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-serif font-bold text-white">
+            Credenciales de Litigantes en Sala de Audiencias
+          </h2>
+          <span className="text-xs text-amber-400 font-mono">
+            {listaFinal.length} Litigantes Acreditados
+          </span>
+        </div>
 
-          return (
-            <div
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          {listaFinal.map((abg) => (
+            <ProfileCard
               key={abg.id}
-              className={`fluid-glass rounded-2xl p-6 space-y-5 transition-all duration-300 ${
-                esMayor ? "border-amber-500/30" : "border-white/10"
-              }`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 flex items-center justify-center text-amber-400 shadow-lg">
-                  <Scale className="w-6 h-6 text-amber-400" />
-                </div>
-
-                <span
-                  className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-                    esMayor
-                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                      : "bg-blue-500/20 text-blue-300 border border-blue-500/40"
-                  }`}
-                >
-                  {esMayor ? "Abogado Mayor" : "Abogado Menor"}
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-serif font-bold text-white tracking-tight">
-                  {abg.nombre || abg.email}
-                </h3>
-                <p className="text-xs text-amber-400/90 font-medium capitalize mt-0.5">
-                  {abg.role === "socio"
-                    ? "Socio Director Titular"
-                    : abg.role === "senior"
-                    ? "Abogado Senior de Litigio"
-                    : "Abogado Asociado / Menor"}
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.06] space-y-2 text-xs">
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="flex items-center gap-1.5 text-slate-400">
-                    <GraduationCap className="w-3.5 h-3.5 text-slate-500" />
-                    Experiencia:
-                  </span>
-                  <strong className="text-white font-mono">{abg.experienciaAnios} años</strong>
-                </div>
-
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="flex items-center gap-1.5 text-slate-400">
-                    <Briefcase className="w-3.5 h-3.5 text-slate-500" />
-                    Casos asignados:
-                  </span>
-                  <strong className="text-emerald-400 font-mono font-bold">
-                    {abg.casosAsignadosCount} expediente(s)
-                  </strong>
-                </div>
-
-                <div className="flex items-center justify-between text-slate-300 pt-1 border-t border-white/[0.05]">
-                  <span className="flex items-center gap-1.5 text-slate-400">
-                    <Mail className="w-3.5 h-3.5 text-slate-500" />
-                    Contacto:
-                  </span>
-                  <span className="text-[11px] text-slate-400 font-mono truncate max-w-[160px]">
-                    {abg.email}
-                  </span>
-                </div>
-              </div>
-
-              <div className="pt-1">
-                <span className="inline-flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Habilitado para Reparto Procesal</span>
-                </span>
-              </div>
-            </div>
-          );
-        })}
+              name={abg.nombre}
+              title={abg.title}
+              handle={abg.handle}
+              status={abg.status}
+              statusColor={abg.statusColor}
+              contactText="Ver Expedientes"
+              avatarUrl={abg.avatarUrl}
+              miniAvatarUrl={abg.avatarUrl}
+              backdropColor={abg.backdropColor}
+              holo={abg.holo}
+              glare={0.6}
+              tiltStrength={14}
+              parallax={8}
+              theme="dark"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
