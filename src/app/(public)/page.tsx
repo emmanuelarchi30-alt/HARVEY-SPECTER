@@ -21,6 +21,7 @@ import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import ChromaGrid, { type ChromaItem } from "@/components/ui/ChromaGrid";
 import ProfileCard from "@/components/ui/ProfileCard";
+import Lightfall from "@/components/ui/Lightfall";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -175,7 +176,28 @@ export default function HomePage() {
       <PublicNavbar />
 
       {/* Hero Section */}
-      <main className="flex-1 flex flex-col justify-center items-center px-4 py-16 sm:py-24 text-center max-w-5xl mx-auto space-y-10">
+      <main className="flex-1 flex flex-col justify-center items-center px-4 py-16 sm:py-24 text-center max-w-5xl mx-auto space-y-10 relative">
+        {/* Rayos celestiales de justicia interactivos con React Bits Lightfall (WebGL2) */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[680px] pointer-events-none -z-10 overflow-hidden opacity-60">
+          <Lightfall
+            colors={isLight ? ['#d97706', '#f59e0b', '#38bdf8', '#cbd5e1'] : ['#f59e0b', '#fbbf24', '#38bdf8', '#ffffff']}
+            backgroundColor={isLight ? "#f1f5f9" : "#080c16"}
+            speed={0.25}
+            streakCount={3}
+            streakWidth={0.8}
+            streakLength={1.2}
+            twinkle={0.3}
+            backgroundGlow={0.14}
+            headGlow={0.65}
+            bloom={0.35}
+            mouseInteraction={true}
+            holdToWarp={true}
+            intro={true}
+            fade={0.45}
+            lightMode={isLight}
+          />
+        </div>
+
         <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full fluid-glass-pill text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider animate-float-subtle">
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           <span>{t.hero_tag}</span>
