@@ -19,6 +19,7 @@ import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { FluidGlassLens } from "@/components/ui/FluidGlassLens";
 import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
+import ChromaGrid, { type ChromaItem } from "@/components/ui/ChromaGrid";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -26,6 +27,51 @@ export default function HomePage() {
   const { t } = useLanguage();
   const { theme } = useTheme();
   const isLight = theme === "light";
+
+  const legalChromaItems: ChromaItem[] = [
+    {
+      image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80&auto=format&fit=crop",
+      title: "Acción de Tutela & Vía de Hecho",
+      subtitle: "Amparo Constitucional Inmediato • Art. 86 C.P.",
+      accent: "#f59e0b",
+      url: "/registro-cliente"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&q=80&auto=format&fit=crop",
+      title: "Ley 1448 de 2011 • Víctimas",
+      subtitle: "Prelación Gratuita • Socio Mayor Titular",
+      accent: "#10b981",
+      url: "/registro-cliente"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&q=80&auto=format&fit=crop",
+      title: "Fast Track Procesal (Menos de 12h)",
+      subtitle: "Tiempo de Estudio Reducido & Medida Cautelar",
+      accent: "#0ea5e9",
+      url: "/aranceles"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format&fit=crop",
+      title: "Litigio Corporativo & Arbitraje",
+      subtitle: "Cámaras de Comercio & Alta Complejidad",
+      accent: "#8b5cf6",
+      url: "/consultar-caso"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop",
+      title: "Constitución de 1991 Integrada",
+      subtitle: "Bloque de Constitucionalidad & Jurisprudencia",
+      accent: "#ec4899",
+      url: "/constitucion"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1575517111478-7f6afd0973db?w=800&q=80&auto=format&fit=crop",
+      title: "Bóveda & Aislamiento Multitenant",
+      subtitle: "Secreto Profesional & Cifrado de Evidencia",
+      accent: "#d97706",
+      url: "/login"
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
@@ -211,6 +257,36 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+
+        {/* Sección ChromaGrid de React Bits: Práctica Jurídica & Especialidades */}
+        <section className="w-full space-y-6 pt-10 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 text-[11px] font-bold uppercase tracking-wider mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>React Bits • Interactive Chroma Grid</span>
+              </div>
+              <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+                Áreas de Práctica & Especialidades Procesales
+              </h2>
+              <p className={`text-xs sm:text-sm mt-1 max-w-2xl ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                Pasa el cursor sobre la cuadrícula cromática para revelar con luz focalizada (spotlight) cada área procesal y consultar la fundamentación legal correspondiente.
+              </p>
+            </div>
+          </div>
+
+          <ChromaGrid
+            items={legalChromaItems}
+            columns={3}
+            radius={280}
+            softness={0.65}
+            damping={0.4}
+            glow={0.6}
+            borderGlow={1}
+            frame={true}
+            theme={isLight ? "light" : "dark"}
+          />
+        </section>
       </main>
 
       {/* Footer */}
