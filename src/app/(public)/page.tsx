@@ -21,6 +21,7 @@ import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import ChromaGrid, { type ChromaItem } from "@/components/ui/ChromaGrid";
 import ProfileCard from "@/components/ui/ProfileCard";
+import Ferrofluid from "@/components/ui/Ferrofluid";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -261,6 +262,29 @@ export default function HomePage() {
             <Zap className="w-4 h-4 text-amber-500" />
             <span>{t.nav_pricing}</span>
           </SpecularButton>
+        </div>
+
+        {/* Component: Ferrofluid (React Bits WebGL Liquid Simulation) */}
+        <div className="w-full max-w-5xl space-y-3 pt-6 text-center">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full fluid-glass-pill text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>React Bits • Component: &lt;Ferrofluid /&gt;</span>
+          </div>
+          <div 
+            style={{ width: '100%', height: '600px', position: 'relative' }} 
+            className="rounded-3xl overflow-hidden border border-amber-500/30 shadow-2xl fluid-glass ring-1 ring-amber-500/20"
+          >
+            <Ferrofluid
+              colors={['#ffffff', '#ffffff', '#ffffff']}
+              spikeHeight={1}
+              sharpness={2.5}
+              tilt={48}
+              magnets={2}
+              mouseInteraction
+              clickPulse
+              lightMode={isLight}
+            />
+          </div>
         </div>
 
         {/* Lente Refractiva React Bits Pure Fluid Glass */}

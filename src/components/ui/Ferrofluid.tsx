@@ -15,6 +15,7 @@ export interface FerrofluidProps extends HTMLAttributes<HTMLDivElement> {
   fluidity?: number;
   tilt?: number;
   magnetism?: number;
+  magnets?: number;
   variation?: number;
   flowDirection?: FerrofluidFlow;
   brightness?: number;
@@ -43,6 +44,7 @@ type Settings = {
   fluidity: number;
   tilt: number;
   magnetism: number;
+  magnets: number;
   variation: number;
   flow: number[];
   brightness: number;
@@ -504,6 +506,7 @@ export const Ferrofluid = ({
   fluidity = 0.5,
   tilt = 48,
   magnetism = 1,
+  magnets = 2,
   variation = 0,
   flowDirection = 'down',
   brightness = 1,
@@ -537,6 +540,7 @@ export const Ferrofluid = ({
     fluidity: clamp(fluidity, 0, 1),
     tilt: clamp(tilt, 10, 70),
     magnetism: Math.max(0, magnetism),
+    magnets: Math.max(1, magnets),
     variation,
     flow: FLOW[flowDirection] ?? FLOW.down,
     brightness: Math.max(0, brightness),
