@@ -229,12 +229,11 @@ harvey-specter/
 │   │
 │   ├── components/                  # Reusable UI & WebGL Graphics
 │   │   └── ui/
-│   │       ├── BackgroundVideo.tsx  # Smooth looping background video component
 │   │       ├── ChromaGrid.tsx       # Optical chromatic grid background (React Bits)
 │   │       ├── ChromaGrid.css       # Grid scanlines and optical styling
-│   │       ├── Ferrofluid.tsx       # Interactive WebGL magnetic liquid simulation
+│   │       ├── Ferrofluid.tsx       # Interactive WebGL2 magnetic liquid background simulation
 │   │       ├── Ferrofluid.css       # Ferrofluid viewport & canvas styles
-│   │       ├── FluidGlassBackground.tsx # Apple VisionOS multi-layered liquid glass backdrop
+│   │       ├── FluidGlassBackground.tsx # Sovereign Apple VisionOS liquid glass backdrop with Ferrofluid
 │   │       ├── FluidGlassLens.tsx   # Glass lens refraction effect
 │   │       ├── HeaderControls.tsx   # Interactive Theme & Language toggle pill
 │   │       ├── Lightfall.tsx        # WebGL2 celestial light beams with bloom shaders
