@@ -447,6 +447,8 @@ export default function HomePage() {
                 tiltStrength={abogado.tiltStrength}
                 parallax={abogado.parallax}
                 theme={isLight ? "light" : "dark"}
+                autoAnimate={true}
+                phase={idx * 1.05}
                 onContactClick={() => {
                   window.location.href = `/registro-cliente?abogado=${encodeURIComponent(abogado.name)}`;
                 }}

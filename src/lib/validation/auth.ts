@@ -35,7 +35,7 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export const loginSchema = z.object({
   email: z
     .string()
-    .email("Ingrese un correo electrónico válido")
+    .min(2, "Ingrese su correo institucional, cédula o usuario")
     .toLowerCase()
     .trim(),
   password: z.string().min(1, "La contraseña es requerida"),

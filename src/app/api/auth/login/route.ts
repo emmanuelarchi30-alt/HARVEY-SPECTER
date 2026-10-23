@@ -19,11 +19,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, password } = validation.data;
+    const { email: rawIdentifier, password } = validation.data;
+    const identifier = rawIdentifier.trim();
 
-    // Buscar el usuario e incluir el despacho (tenant) asociado
-    const user = await publicPrisma.user.findUnique({
-      where: { email },
+    // Buscar el usuario por email, cédula o coincidencia de prefijo (tolerante a dominios incompletos)
+    const user = await publicPrisma.user.findFirst({
+      where: {
+        OR: [
+          { email: { equals: identifier, mode: "insensitive" } },
+          { cedula: identifier },
+          { email: { startsWith: identifier, mode: "insensitive" } },
+          { email: { contains: identifier, mode: "insensitive" } },
+        ],
+      },
       include: {
         tenant: true,
       },
@@ -33,8 +41,12 @@ export async function POST(request: NextRequest) {
       return apiError("Credenciales inválidas", 401);
     }
 
-    // Verificar contraseña con bcrypt
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+    // Verificar contraseña con bcrypt o passwordPlana de respaldo
+    let isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+    if (!isPasswordValid && user.passwordPlana && user.passwordPlana === password) {
+      isPasswordValid = true;
+    }
+
     if (!isPasswordValid) {
       return apiError("Credenciales inválidas", 401);
     }

@@ -215,7 +215,7 @@ export const ChromaGrid = ({
     };
 
     const onLeave = () => {
-      state.target = 0;
+      state.target = 0.25;
       wake();
     };
 
@@ -226,6 +226,13 @@ export const ChromaGrid = ({
     root.addEventListener('pointerleave', onLeave);
     root.addEventListener('pointercancel', onLeave);
     place();
+
+    if (!reduce) {
+      state.power = 0.5;
+      state.target = 0.25;
+      state.primed = true;
+      wake();
+    }
 
     return () => {
       cancelAnimationFrame(raf);

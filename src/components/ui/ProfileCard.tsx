@@ -31,6 +31,8 @@ export interface ProfileCardProps {
   enableMobileTilt?: boolean;
   mobileTiltSensitivity?: number;
   intro?: boolean;
+  autoAnimate?: boolean;
+  phase?: number;
   className?: string;
 }
 
@@ -94,6 +96,10 @@ const GRAIN = `url("data:image/svg+xml,${encodeURIComponent(
   "<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><filter id='g' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0.55 0 0 0 -0.24 0.55 0 0 0 -0.24 0.55 0 0 0 -0.24 0 0 0 0 1'/></filter><rect width='100%' height='100%' filter='url(#g)'/></svg>"
 )}")`;
 
+const DEFAULT_PATTERN = `data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><circle cx='30' cy='30' r='24' fill='none' stroke='white' stroke-width='0.75' stroke-dasharray='2,2' opacity='0.4'/><polygon points='30,8 52,30 30,52 8,30' fill='none' stroke='white' stroke-width='0.75' opacity='0.3'/><circle cx='30' cy='30' r='10' fill='none' stroke='white' stroke-width='0.5' opacity='0.35'/></svg>"
+)}`;
+
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 const isDark = (color: string): boolean | null => {
@@ -127,13 +133,18 @@ export const ProfileCard = ({
   enableMobileTilt = false,
   mobileTiltSensitivity = 5,
   intro = true,
+  autoAnimate = true,
+  phase: explicitPhase,
   className = ''
 }: ProfileCardProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Engine | null>(null);
-  const settings = { enableTilt, tiltStrength, parallax, mobileTiltSensitivity, intro };
+  const settings = { enableTilt, tiltStrength, parallax, mobileTiltSensitivity, intro, autoAnimate };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
+
+  // Fase armónica única por tarjeta para que floten orgánicamente
+  const phase = explicitPhase ?? (Array.from(name).reduce((acc, c) => acc + c.charCodeAt(0), 0) % 10);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -148,6 +159,7 @@ export const ProfileCard = ({
     let last = 0;
     let slowUntil = 0;
     let touchId: number | null = null;
+    let isHovered = false;
 
     const write = () => {
       const { enableTilt: tiltOn, tiltStrength: strength, parallax: depth } = settingsRef.current;
@@ -172,6 +184,15 @@ export const ProfileCard = ({
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000 || 0);
       last = now;
+
+      // Animación ambiente flotante cuando no está bajo control directo del cursor
+      if (!isHovered && settingsRef.current.autoAnimate && !reduced) {
+        const t = now * 0.0015 + phase;
+        x.target = Math.sin(t) * 0.35;
+        y.target = Math.cos(t * 0.8) * 0.25;
+        light.target = 0.5 + Math.sin(t * 1.2) * 0.2;
+      }
+
       const slow = now < slowUntil;
       const stiffness = slow ? 24 : 120;
       const damping = slow ? 9 : 16;
@@ -186,12 +207,15 @@ export const ProfileCard = ({
       const tau = light.target > light.p ? 0.18 : slow ? 0.9 : 0.45;
       light.p += (light.target - light.p) * (1 - Math.exp(-dt / tau));
       write();
+
       const moving =
+        (settingsRef.current.autoAnimate && !reduced && !isHovered) ||
         Math.abs(x.target - x.p) > 0.0005 ||
         Math.abs(y.target - y.p) > 0.0005 ||
         Math.abs(x.v) > 0.0005 ||
         Math.abs(y.v) > 0.0005 ||
         Math.abs(light.target - light.p) > 0.002;
+
       if (moving) {
         raf = requestAnimationFrame(frame);
       } else {
@@ -204,7 +228,7 @@ export const ProfileCard = ({
     };
 
     const wake = () => {
-      if (!raf) return;
+      if (raf) return;
       last = performance.now();
       raf = requestAnimationFrame(frame);
     };
@@ -223,12 +247,21 @@ export const ProfileCard = ({
       aim(((event.clientX - rect.left) / rect.width) * 2 - 1, ((event.clientY - rect.top) / rect.height) * 2 - 1);
     };
 
-    const release = () => aim(0, 0, false);
+    const release = () => {
+      isHovered = false;
+      if (!settingsRef.current.autoAnimate) {
+        aim(0, 0, false);
+      } else {
+        wake();
+      }
+    };
 
     const onEnter = (event: PointerEvent) => {
+      isHovered = true;
       if (event.pointerType === 'mouse') aimAt(event);
     };
     const onMove = (event: PointerEvent) => {
+      isHovered = true;
       if (event.pointerType === 'mouse' || event.pointerId === touchId) aimAt(event);
     };
     const onLeave = (event: PointerEvent) => {
@@ -236,6 +269,7 @@ export const ProfileCard = ({
     };
     const onDown = (event: PointerEvent) => {
       if (event.pointerType === 'mouse') return;
+      isHovered = true;
       touchId = event.pointerId;
       aimAt(event);
     };
@@ -267,6 +301,8 @@ export const ProfileCard = ({
       light.p = 1;
       slowUntil = performance.now() + 1400;
       write();
+      wake();
+    } else if (settingsRef.current.autoAnimate && !reduced) {
       wake();
     } else {
       write();
@@ -345,10 +381,10 @@ export const ProfileCard = ({
           '--pc-parallax': `${Math.max(0, parallax)}px`,
           '--pc-status': statusColor,
           '--pc-grain': GRAIN,
-          '--pc-pattern': iconUrl ? `url("${iconUrl}")` : 'linear-gradient(#000, #000)',
-          '--pc-pattern-size': iconUrl ? '180% auto' : '100% 100%',
-          '--pc-holo-gain': iconUrl ? 1.25 : 0.75,
-          '--pc-holo-detail': iconUrl && foil === 'dark' ? 1 : 0
+          '--pc-pattern': `url("${iconUrl || DEFAULT_PATTERN}")`,
+          '--pc-pattern-size': iconUrl ? '180% auto' : '60px 60px',
+          '--pc-holo-gain': iconUrl ? 1.25 : 1.1,
+          '--pc-holo-detail': 1
         } as CSSProperties
       }
     >

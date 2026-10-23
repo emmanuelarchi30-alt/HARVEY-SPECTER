@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Scale, Search, Lock, Mail, ArrowLeft, ShieldCheck, AlertCircle } from "lucide-react";
+import { Scale, Search, Lock, Mail, ArrowLeft, ShieldCheck, AlertCircle, Eye, EyeOff, Sparkles, UserCheck } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { HeaderControls } from "@/components/ui/HeaderControls";
 import { SpecularButton } from "@/components/ui/SpecularButton";
@@ -16,6 +16,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -131,42 +132,61 @@ export default function LoginPage() {
                   isLight ? "text-slate-700" : "text-slate-300"
                 }`}
               >
-                Correo Institucional
+                Correo Institucional o Cédula
               </label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   id="email"
-                  type="email"
+                  type="text"
+                  autoComplete="username"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="harvey.specter@specterlaw.co"
+                  placeholder="harvey@specterlaw.co o Cédula (ej. 80192834)"
                   className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
-                Contraseña de Acceso
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label
+                  htmlFor="password"
+                  className={`block text-xs font-semibold uppercase tracking-wider ${
+                    isLight ? "text-slate-700" : "text-slate-300"
+                  }`}
+                >
+                  Contraseña de Acceso
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-[11px] text-amber-500 hover:text-amber-400 flex items-center space-x-1"
+                >
+                  {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
+                </button>
+              </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 ios-input text-sm"
+                  className="w-full pl-10 pr-10 py-2.5 ios-input text-sm"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-200"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
@@ -196,6 +216,87 @@ export default function LoginPage() {
               </SpecularButton>
             </div>
           </form>
+
+          {/* Cuentas de Acceso Rápido / Demo Partners */}
+          <div className="pt-2 border-t border-white/[0.08] space-y-2.5">
+            <div className="flex items-center space-x-1.5 text-[11px] font-semibold uppercase tracking-wider text-amber-500/90">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Cuentas de Acceso Rápido (1-Clic)</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-left">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("harvey@specterlaw.co");
+                  setPassword("Harvey2026*");
+                  setError(null);
+                }}
+                className={`p-2 rounded-xl border text-left transition ${
+                  isLight
+                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
+                }`}
+              >
+                <div className="text-xs font-bold text-amber-500">Harvey Specter</div>
+                <div className="text-[10px] text-slate-400 truncate">harvey@specterlaw.co</div>
+                <div className="text-[10px] font-mono text-emerald-500">Harvey2026*</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("jessica@specterlaw.co");
+                  setPassword("Jessica2026*");
+                  setError(null);
+                }}
+                className={`p-2 rounded-xl border text-left transition ${
+                  isLight
+                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
+                }`}
+              >
+                <div className="text-xs font-bold text-amber-500">Jessica Pearson</div>
+                <div className="text-[10px] text-slate-400 truncate">C.C. 52893120</div>
+                <div className="text-[10px] font-mono text-emerald-500">Jessica2026*</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("mike@specterlaw.co");
+                  setPassword("MikeRoss2026*");
+                  setError(null);
+                }}
+                className={`p-2 rounded-xl border text-left transition ${
+                  isLight
+                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
+                }`}
+              >
+                <div className="text-xs font-bold text-amber-500">Mike Ross</div>
+                <div className="text-[10px] text-slate-400 truncate">mike@specterlaw.co</div>
+                <div className="text-[10px] font-mono text-emerald-500">MikeRoss2026*</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("rachel@specterlaw.co");
+                  setPassword("Rachel2026*");
+                  setError(null);
+                }}
+                className={`p-2 rounded-xl border text-left transition ${
+                  isLight
+                    ? "bg-slate-100 hover:bg-amber-50/80 border-slate-200 hover:border-amber-400"
+                    : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-amber-500/40"
+                }`}
+              >
+                <div className="text-xs font-bold text-amber-500">Rachel Zane</div>
+                <div className="text-[10px] text-slate-400 truncate">rachel@specterlaw.co</div>
+                <div className="text-[10px] font-mono text-emerald-500">Rachel2026*</div>
+              </button>
+            </div>
+          </div>
 
           <div className="pt-4 border-t border-white/[0.08] text-center space-y-2">
             <p className={`text-xs ${isLight ? "text-slate-600" : "text-slate-400"}`}>
