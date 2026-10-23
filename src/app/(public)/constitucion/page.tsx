@@ -18,7 +18,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
-import { HeaderControls } from "@/components/ui/HeaderControls";
+import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -58,64 +58,8 @@ export default function ConstitucionPage() {
     >
       <FluidGlassBackground />
 
-      {/* Header Fluid Glass */}
-      <header className="border-b border-white/[0.08] fluid-glass sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 flex items-center justify-center shadow-lg shadow-amber-950/20">
-              <Scale className="w-5 h-5 text-amber-500" />
-            </div>
-            <div>
-              <span
-                className={`font-serif font-bold text-lg tracking-tight block leading-tight ${
-                  isLight ? "text-slate-900" : "text-white"
-                }`}
-              >
-                Constitución Política de 1991
-              </span>
-              <span className="text-[10px] text-amber-500 font-semibold tracking-wider uppercase block">
-                República de Colombia • Visor Oficial
-              </span>
-            </div>
-          </Link>
-
-          <div className="flex items-center space-x-3">
-            <HeaderControls />
-            <Link
-              href="/consultar-caso"
-              className="text-xs font-medium px-3 py-1.5 rounded-xl border border-white/10 fluid-glass-pill transition flex items-center space-x-1"
-            >
-              <Search className="w-3.5 h-3.5 text-amber-500" />
-              <span className="hidden sm:inline">Consultar mi Radicado</span>
-            </Link>
-            <SpecularButton
-              href="/registro-cliente"
-              size="sm"
-              radius={14}
-              tint={isLight ? "#f59e0b" : "#ffffff"}
-              tintOpacity={isLight ? 0.16 : 0.08}
-              textColor={isLight ? "#92400e" : "#fef3c7"}
-              lineColor={isLight ? "#d97706" : "#f59e0b"}
-              baseColor={isLight ? "#fef3c7" : "#525252"}
-              intensity={1.1}
-              idleIntensity={0.35}
-              followMouse
-            >
-              <Scale className="w-3.5 h-3.5 text-amber-500" />
-              <span>Radicar Caso (IA)</span>
-            </SpecularButton>
-            <Link
-              href="/"
-              className={`text-xs transition flex items-center space-x-1 ${
-                isLight ? "text-slate-500 hover:text-slate-900" : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Inicio</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Header con PillNav de React Bits */}
+      <PublicNavbar />
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">

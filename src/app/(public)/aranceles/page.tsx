@@ -17,7 +17,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
-import { HeaderControls } from "@/components/ui/HeaderControls";
+import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -145,40 +145,8 @@ export default function ArancelesPage() {
     <div className="min-h-screen text-slate-100 flex flex-col font-sans relative">
       <FluidGlassBackground />
 
-      {/* Header Fluid Glass */}
-      <header className="border-b border-white/[0.08] fluid-glass sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-400 flex items-center justify-center shadow-lg shadow-amber-950/40">
-              <Scale className="w-5 h-5 text-amber-400" />
-            </div>
-            <div>
-              <span className="font-serif font-bold text-lg text-white tracking-tight block leading-none">
-                Aranceles & Tiempos de Estudio
-              </span>
-              <span className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">
-                Prelación Procesal & Honorarios Judiciales
-              </span>
-            </div>
-          </Link>
-
-          <div className="flex items-center space-x-3">
-            <HeaderControls />
-            <Link
-              href="/consultar-caso"
-              className="text-xs text-slate-300 hover:text-white font-medium flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-white/10 fluid-glass-pill transition"
-            >
-              <span>Consultar Radicado</span>
-            </Link>
-            <Link
-              href="/"
-              className="text-xs text-slate-400 hover:text-white transition"
-            >
-              ← Inicio
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Header con PillNav de React Bits */}
+      <PublicNavbar />
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
@@ -208,63 +176,63 @@ export default function ArancelesPage() {
                   : "border-white/10"
               }`}
             >
-              {plan.esDestacado && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-lg flex items-center space-x-1">
-                  <Zap className="w-3 h-3 fill-slate-950" />
-                  <span>Respuesta en Menos de 12 Horas</span>
-                </div>
-              )}
+              <div className="space-y-4">
+                {plan.esDestacado && (
+                  <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-md w-fit">
+                    <Zap className="w-3 h-3 fill-slate-950 shrink-0" />
+                    <span>⚡ Respuesta en Menos de 12 Horas</span>
+                  </div>
+                )}
 
-              {plan.esGratuito && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-lg">
-                  Amparo Ley 1448 de 2011
-                </div>
-              )}
+                {plan.esGratuito && (
+                  <div className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+                    <span>🕊️ Amparo Ley 1448 de 2011</span>
+                  </div>
+                )}
 
-              <div className="space-y-4 pt-2">
                 <div>
-                  <h3 className="font-serif font-bold text-white text-xl">
+                  <h3 className={`font-serif font-bold text-xl ${isLight ? "text-slate-900" : "text-white"}`}>
                     {plan.nombre}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">{plan.subtitulo}</p>
+                  <p className={`text-xs mt-0.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>{plan.subtitulo}</p>
                 </div>
 
                 <div className="pt-2 border-t border-white/[0.08]">
-                  <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block">
+                  <span className={`text-xs uppercase tracking-wider font-semibold block ${isLight ? "text-slate-500" : "text-slate-400"}`}>
                     Arancel Oficial
                   </span>
-                  <div className="text-2xl sm:text-3xl font-mono font-bold text-amber-400">
+                  <div className={`text-2xl sm:text-3xl font-mono font-bold ${isLight ? "text-amber-600" : "text-amber-400"}`}>
                     {plan.precioTexto}
                   </div>
                 </div>
 
                 {/* Tiempo de Estudio Destacado */}
-                <div className="p-3.5 rounded-2xl bg-slate-950/70 border border-white/[0.08] space-y-1">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
-                    <Clock className="w-3 h-3 text-amber-400" />
+                <div className={`p-3.5 rounded-2xl border space-y-1 ${isLight ? "bg-amber-50/80 border-amber-200" : "bg-slate-950/70 border-white/[0.08]"}`}>
+                  <span className={`text-[10px] uppercase font-bold tracking-wider flex items-center gap-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                    <Clock className="w-3 h-3 text-amber-500" />
                     Tiempo de Estudio Procesal:
                   </span>
-                  <p className="text-sm font-bold text-white">
+                  <p className={`text-sm font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
                     {plan.tiempoEstudio}
                   </p>
                 </div>
 
                 {/* Jerarquía de Abogado Asignado */}
-                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] space-y-1 text-xs">
-                  <span className="text-[10px] uppercase font-semibold text-slate-400 flex items-center gap-1">
-                    <Award className="w-3 h-3 text-amber-400" />
+                <div className={`p-3 rounded-xl border space-y-1 text-xs ${isLight ? "bg-white/80 border-slate-200" : "bg-white/[0.03] border-white/[0.05]"}`}>
+                  <span className={`text-[10px] uppercase font-semibold flex items-center gap-1 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+                    <Award className="w-3 h-3 text-amber-500" />
                     Nivel del Abogado:
                   </span>
-                  <p className="font-medium text-amber-300/90 leading-tight">
+                  <p className={`font-medium leading-tight ${isLight ? "text-amber-700" : "text-amber-300/90"}`}>
                     {plan.nivelAbogado}
                   </p>
                 </div>
 
                 {/* Beneficios */}
-                <ul className="space-y-2 text-xs text-slate-300 pt-2">
+                <ul className={`space-y-2 text-xs pt-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
                   {plan.beneficios.map((b, i) => (
                     <li key={i} className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                       <span>{b}</span>
                     </li>
                   ))}

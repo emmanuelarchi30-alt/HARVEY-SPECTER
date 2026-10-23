@@ -17,7 +17,7 @@ import {
   BookOpen
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
-import { HeaderControls } from "@/components/ui/HeaderControls";
+import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -108,49 +108,8 @@ export default function ConsultarCasoPage() {
     <div className={`min-h-screen flex flex-col font-sans relative ${isLight ? "text-slate-800" : "text-slate-100"}`}>
       <FluidGlassBackground />
 
-      {/* Header con estilo Fluid Glass */}
-      <header className="border-b border-white/[0.08] fluid-glass sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 flex items-center justify-center shadow-lg shadow-amber-950/20">
-              <Scale className="w-5 h-5 text-amber-500" />
-            </div>
-            <div>
-              <span className={`font-serif font-bold text-lg tracking-tight block leading-none ${isLight ? "text-slate-900" : "text-white"}`}>
-                Portal del Ciudadano
-              </span>
-              <span className="text-[10px] text-amber-500 font-semibold tracking-wider uppercase">
-                Consulta de Expedientes & Tutelas
-              </span>
-            </div>
-          </Link>
-
-          <div className="flex items-center space-x-3">
-            <HeaderControls />
-            <Link
-              href="/aranceles"
-              className="text-xs font-medium px-3 py-1.5 rounded-xl border border-white/10 fluid-glass-pill transition"
-            >
-              <span>Aranceles & Tiempos</span>
-            </Link>
-            <Link
-              href="/constitucion"
-              target="_blank"
-              className="hidden sm:flex text-xs text-amber-500 font-medium items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 transition"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Constitución 1991</span>
-            </Link>
-            <Link
-              href="/"
-              className="text-xs text-slate-400 hover:text-white transition flex items-center space-x-1"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Volver</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Header con PillNav de React Bits */}
+      <PublicNavbar />
 
       {/* Contenido Principal */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-12 space-y-8">

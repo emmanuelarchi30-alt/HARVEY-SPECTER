@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { FluidGlassBackground } from "@/components/ui/FluidGlassBackground";
 import { FluidGlassLens } from "@/components/ui/FluidGlassLens";
-import { HeaderControls } from "@/components/ui/HeaderControls";
+import { PublicNavbar } from "@/components/ui/PublicNavbar";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -31,77 +31,8 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col font-sans relative">
       <FluidGlassBackground />
 
-      {/* Navbar público con Fluid Glass */}
-      <header className="border-b border-white/[0.08] fluid-glass sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 text-amber-500 flex items-center justify-center shadow-lg shadow-amber-950/20">
-              <Scale className="w-5 h-5 text-amber-500" />
-            </div>
-            <div>
-              <span className={`font-serif font-bold text-lg tracking-tight block leading-tight ${isLight ? "text-slate-900" : "text-white"}`}>
-                Specter & Asociados
-              </span>
-              <span className="text-[10px] text-amber-500 font-semibold tracking-wider uppercase block">
-                Litigio de Élite • Colombia
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2.5">
-            {/* Controles de Modo Claro/Oscuro y Traductor */}
-            <HeaderControls />
-
-            <Link
-              href="/consultar-caso"
-              className="hidden sm:flex text-xs font-medium px-3 py-1.5 rounded-xl fluid-glass-pill transition items-center space-x-1.5"
-            >
-              <Search className="w-3.5 h-3.5 text-amber-500" />
-              <span>{t.nav_consult}</span>
-            </Link>
-
-            <Link
-              href="/aranceles"
-              className="hidden md:flex text-xs font-medium px-3 py-1.5 rounded-xl border border-white/10 fluid-glass-pill transition items-center space-x-1.5"
-            >
-              <Zap className="w-3.5 h-3.5 text-amber-500" />
-              <span>{t.nav_pricing}</span>
-            </Link>
-
-            <Link
-              href="/constitucion"
-              target="_blank"
-              className="hidden lg:flex text-xs font-medium px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-500 transition items-center space-x-1.5"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>{t.nav_constitution}</span>
-            </Link>
-
-            <Link
-              href="/login"
-              className="text-xs font-medium px-3 py-1.5 rounded-xl transition hover:opacity-80"
-            >
-              {t.nav_lawyer_access}
-            </Link>
-
-            <SpecularButton
-              href="/register"
-              size="sm"
-              radius={14}
-              tint={isLight ? "#f59e0b" : "#ffffff"}
-              tintOpacity={isLight ? 0.15 : 0.08}
-              textColor={isLight ? "#92400e" : "#ffffff"}
-              lineColor={isLight ? "#d97706" : "#f59e0b"}
-              baseColor={isLight ? "#fef3c7" : "#525252"}
-              intensity={1.1}
-              idleIntensity={0.35}
-              followMouse
-            >
-              {t.nav_register_firm}
-            </SpecularButton>
-          </div>
-        </div>
-      </header>
+      {/* Navbar público con PillNav de React Bits */}
+      <PublicNavbar />
 
       {/* Hero Section */}
       <main className="flex-1 flex flex-col justify-center items-center px-4 py-16 sm:py-24 text-center max-w-5xl mx-auto space-y-10">
